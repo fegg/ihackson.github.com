@@ -1,0 +1,36 @@
+a {
+	text-decoration: none;
+}
+.main {
+	padding: 30px;
+	background: #eee;
+}
+.choose-tip {
+	width: 200px;
+	margin: 30px auto;
+	text-align: center;
+	font-size: 28px;
+	color: #222;
+}
+.quick-btn {
+	display: block;
+	width: 200px;
+	height: 40px;
+	line-height: 40px;
+	color: #fff;
+	margin: 0 auto;
+	border-radius: 6px;
+	text-align: center;
+	background: #84ce1c;
+}
+.doubi-btn {
+	display: block;
+	width: 200px;
+	height: 40px;
+	line-height: 40px;
+	color: #fff;
+	margin: 30px auto 0;
+	border-radius: 6px;
+	text-align: center;
+	background: #fc36b4;
+}
