@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="static/css/reset.css">
+		<title>box2d-demo</title>
+		<style type="text/css">
+		html,body{
+			width: 100%;
+			height: 100%;
+		}
+		body{
+			display: relative;
+			margin: 0 auto;
+		}
+		.HIDE{
+			display: none;
+		}
+		.scoreBox{
+			height: 10%;
+			display: table;
+			margin: 0 auto;
+		}
+		.score-info{
+			display: table-cell;
+			vertical-align: middle;
+			font: 16px '微软雅黑';
+		}
+		.gameBox{
+			width: 100%;
+			height: 90%;
+		}
+		#canvas{
+			background:url("static/images/wall.png") center center;
+			display: block;
+		}
+		.result{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -100px;
+			margin-left: -150px;
+			width: 300px;
+			height: 200px;
+			background-color: rgba(255,255,255,.5);
+		}
+		</style>
+	</head>
+	<body  onload="init('static/images/lulin_new.png',200);">
+		<div class="scoreBox"><span class="score-info">你的得分：</span><span id="score" class="score-info">0</span></div>
+		<div class="gameBox"><canvas id="canvas"></canvas></div>
+		<div class="result HIDE">
+			<p> 哈哈，美男子成功逃脱！</p>
+			<p class="final-score">16</p>
+			<p><a href="">分享</a><a href="">再玩一次</a></p>
+		</div>
+
+		<script type="text/javascript" src="static/js/zepto.base64.min.js"></script>
+		<script type="text/javascript" src="static/js/zepto.ext.js"></script>
+		<script type="text/javascript" src="static/js/zepto_touch_fx.112.js"></script>
+		<script type="text/javascript" src="static/js/box2d.js"></script>
+		<script type="text/javascript" src="static/js/boxdemo.js"></script>
+	</body>
+</html>
