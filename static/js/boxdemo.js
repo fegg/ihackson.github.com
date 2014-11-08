@@ -148,6 +148,10 @@ var game = function () {
 		};
 	}
 
+	function random(num){
+		return Math.ceil(Math.random()*num);
+	}
+
 	// Update the world display and add new objects as appropriate
 	function update2() {
 		world.Step(1 / 60, 10, 10);
@@ -303,7 +307,7 @@ var game = function () {
 	};
 	var tarList = {
 		cat: cat,
-		cake: cakeInfo
+		cake: null
 	};
 	var stateList = {
 		1: {
@@ -316,29 +320,48 @@ var game = function () {
 			tar: 'cat',
 			when: 'next'
 		},
-		4: {
+		5: {
 			type: 'size',
 			tar: 'cat',
 			cmd: '+'
-		},
+		}
+	};
+	stateList = $.extend(stateList, {
 		6: {
 			type: 'size',
 			tar: 'cat',
 			cmd: '-'
 		}
-	};
+	});
+
+	var skipNum = 4;
 	function checkMode(score){
 		var info = stateList[score];
-		if (!info) {return}
 
+		if (!info && skipNum <= 0) {
+			info = stateList[random(4)];
+		}
+
+		if (!info) {
+			skipNum--;
+			return;
+		}
+
+		skipNum = 3 + random(3);
+
+		if ((info.when && info.when == 'next') || info.tar == 'cake') {
+			tmpCmd = function(){
+				execCmd(info);
+			};
+		} else {
+			execCmd(info)
+		}
+
+	}
+
+	function execCmd(info){
 		// try {
-			if (info.when && info.when == 'next') {
-				tmpCmd = function(){
-					cmdList[info.type](tarList[info.tar], info.cmd);
-				};
-			} else {
-				cmdList[info.type](tarList[info.tar], info.cmd);
-			}
+			cmdList[info.type](tarList[info.tar], info.cmd);
 		// } catch(e){}
 	}
 
