@@ -215,6 +215,7 @@ var game = function (img,imgsize) {
 		fixDef.density = .5;
 		fixDef.friction = 0;
 		fixDef.restitution = 1;
+		fixDef.isSensor = true;
 
 		var bodyDef = new b2BodyDef;
 		bodyDef.type = b2Body.b2_dynamicBody;
@@ -274,6 +275,14 @@ var game = function (img,imgsize) {
 		body.GetBody().GetUserData().bodysize = bodysize + 30;
 		var imgsize = body.GetBody().GetUserData().imgsize;
 		body.GetBody().GetUserData().imgsize = imgsize + 40;
+	}
+
+	window.test = function(){
+		expandCatSize(catBody);
+	};
+
+	function showScore(positionY){
+		
 	}
 
 	function stop(){
@@ -338,7 +347,6 @@ var game = function (img,imgsize) {
 				//修改表情
 				var loverboy = (aName == "loverboy")?collisionA:collisionB;
 
-				expandCatSize(catBody);
 				loverboy.imgsrc = "static/images/kaixin.png";
 				clearTimeout(timer);
 				timer = setTimeout(changeFace,0.6*1000);
