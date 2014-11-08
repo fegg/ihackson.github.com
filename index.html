@@ -45,28 +45,33 @@
 			height: 200px;
 			background-color: rgba(255,255,255,.5);
 		}
+
+		.main {
+			padding: 0;
+			display: block;
+		}
 		</style>
 	</head>
 	<body  onload="init();">
-		<div class="scoreBox">
-			<span class="score-info">你的得分：</span>
-			<span id="score" class="score-info">0</span>
+		<div class="page main">
+			<div class="scoreBox">
+				<span class="score-info">你的得分：</span>
+				<span id="score" class="score-info">0</span>
+			</div>
+			<div class="gameBox">
+				<canvas id="canvas">
+					
+				</canvas>
+			</div>
+			<div class="result HIDE">
+				<p> 哈哈，美男子成功逃脱！</p>
+				<p class="final-score">16</p>
+				<p>
+					<a href="#share" class="js-mh-share">分享</a>
+					<a href="">再玩一次</a>
+				</p>
+			</div>
 		</div>
-		<div class="gameBox">
-			<canvas id="canvas">
-				
-			</canvas>
-		</div>
-		<div class="result HIDE">
-			<p> 哈哈，美男子成功逃脱！</p>
-			<p class="final-score">16</p>
-			<p>
-				<a href="#share" class="js-mh-share">分享</a>
-				<a href="">再玩一次</a>
-			</p>
-		</div>
-
-
 		
 		<style type="text/css">
 			/*分享弹层*/

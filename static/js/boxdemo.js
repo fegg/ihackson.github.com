@@ -1,6 +1,6 @@
 function init(img,imgsize) {
 	if (!img) {
-		img = "static/images/lulin_new.png";
+		img = "static/images/cat.png";
 	}
 	if (!imgsize) {
 		imgsize = 200;
@@ -9,6 +9,7 @@ function init(img,imgsize) {
 		obj : null,
 		status : true//true表示正在使用，false表示可以删除
 	};
+	var weaponImgSrc = "static/images/cake.png";
 	var deltaFloor = 80;//底部子弹区域高度
 	var speed = 10000000;
 	var catBody;
@@ -232,7 +233,12 @@ function init(img,imgsize) {
 		fixDef.shape = new b2CircleShape(scale);
 		bodyDef.position.x = touchPosition.x;
 		bodyDef.position.y = canvasheight- touchPosition.y;//canvas（左上角）和box2d（左下角）的原点不一样
-		var data = { name: "weapon"};
+		var data = { 
+			imgsrc: weaponImgSrc,
+	 		imgsize: 120,
+	 		bodysize: scale,
+			name: "weapon"
+		};
 		bodyDef.userData = data;
 		var body = world.CreateBody(bodyDef).CreateFixture(fixDef);
 
@@ -267,12 +273,16 @@ function init(img,imgsize) {
 	// 	addFore(catBody);
 	// };
 
+	function changeFace(){
+		catBody.GetBody().GetUserData().imgsrc = "static/images/cat.png";
+	}
 	/**
 	 * 添加碰撞检测事件
 	 */
 	(function collisionDetect(){
 		// Add listeners for contact
 		var listener = new b2ContactListener;
+		var timer ;
 		listener.BeginContact = function(contact) {
 			var collisionA = contact.GetFixtureA().GetBody().GetUserData();//发生碰撞的两个物体之一
 			var collisionB = contact.GetFixtureB().GetBody().GetUserData();//发生碰撞的另外一个物体
@@ -287,7 +297,10 @@ function init(img,imgsize) {
 		    	$score.html(Number($score.html())+1);//分数加1
 
 		    	//修改表情
-				catBody.getBody().userData.imgsrc = "static/images/lulin2_new.png";	
+		    	var loverboy = (aName == "loverboy")?collisionA:collisionB;
+				loverboy.imgsrc = "static/images/kaixin.png";
+				clearTimeout(timer);
+				timer = setTimeout(changeFace,0.6*1000);
 
 		    }else if((aName == "roof" && bName == "weapon")
 		            || (bName == "roof" && aName == "weapon")){//子弹跑出界面之外
