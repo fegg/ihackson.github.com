@@ -281,12 +281,24 @@ var game = function (img,imgsize) {
 	}
 
 	//修改图片大小
-	function expandCatSize(body){
-		var bodysize = body.GetBody().GetUserData().bodysize;
-		body.GetBody().GetUserData().bodysize = bodysize + 30;
-		var imgsize = body.GetBody().GetUserData().imgsize;
-		body.GetBody().GetUserData().imgsize = imgsize + 40;
+	function expandSize(body, type){
+		var data = body.GetBody().GetUserData();
+		var s = body.GetShape();
+		if (type == '+') {
+			data.bodysize *= 2;
+		} else if (type == '-') {
+			data.bodysize /= 2;
+		} else {
+			data.bodysize = 30;
+		}
+		s.SetRadius(data.bodysize);
+
 	}
+
+
+
+
+
 
 	function stop(){
 
@@ -329,8 +341,10 @@ var game = function (img,imgsize) {
 		var listener = new Box2D.Dynamics.b2ContactListener;
 		var timer ;
 		listener.BeginContact = function(contact) {
-			var collisionA = contact.GetFixtureA().GetBody().GetUserData();//发生碰撞的两个物体之一
-			var collisionB = contact.GetFixtureB().GetBody().GetUserData();//发生碰撞的另外一个物体
+			var a = contact.GetFixtureA();
+			var b = contact.GetFixtureB()
+			var collisionA = a.GetBody().GetUserData();//发生碰撞的两个物体之一
+			var collisionB = b.GetBody().GetUserData();//发生碰撞的另外一个物体
 
 			var aName = (collisionA != undefined)?collisionA.name:"";
 			var bName = (collisionB != undefined)?collisionB.name:"";
@@ -340,18 +354,20 @@ var game = function (img,imgsize) {
 					|| (bName == "loverboy" && aName == "weapon")) {
 				weapon.status = false;//将子弹设置为需要删除的状态
 
+				var loverboy = (aName == "loverboy")?a:b;
+
+				// 分数
 				var score = Number($score.html());
-				var y = contact.GetFixtureA().GetBody().GetPosition().y;
+				var y = loverboy.GetBody().GetPosition().y;
 				var as = Math.ceil((y-deltaFloor)/moveHeight*4);
 
 				score += as;
 				$score.html(score);
 
-				//修改表情
-				var loverboy = (aName == "loverboy")?collisionA:collisionB;
+				checkMode(score);
 
-				expandCatSize(catBody);
-				loverboy.imgsrc = "static/images/kaixin.png";
+				//修改表情
+				changeFace("kaixin");
 				clearTimeout(timer);
 				timer = setTimeout(changeFace,0.6*1000);
 
@@ -376,7 +392,6 @@ var game = function (img,imgsize) {
 	    debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);  
 	    world.SetDebugDraw(debugDraw);  
 	}
-
 	debugDraw();
 
 	return {
