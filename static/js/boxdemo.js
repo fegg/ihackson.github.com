@@ -3,7 +3,7 @@ var game = function (img,imgsize) {
 		img = "static/images/cat.png";
 	}
 	if (!imgsize) {
-		imgsize = 200;
+		imgsize = 230;
 	}
 	var weapon ={
 		obj : null,
@@ -239,7 +239,7 @@ var game = function (img,imgsize) {
 	function getPointOnCanvas(canvas, x, y) {
 		var bbox =canvas.getBoundingClientRect();
 		return { 
-			x: x- bbox.left * (canvas.width / bbox.width),
+			x: x - bbox.left * (canvas.width / bbox.width),
 			y: y - bbox.top  * (canvas.height / bbox.height)
 		};
 	}
@@ -264,6 +264,15 @@ var game = function (img,imgsize) {
 		var img = img || "cat";
 		catBody.GetBody().GetUserData().imgsrc = "static/images/"+img+".png";
 	}
+
+	//修改图片大小
+	function expandCatSize(body){
+		var bodysize = body.GetBody().GetUserData().bodysize;
+		body.GetBody().GetUserData().bodysize = bodysize + 30;
+		var imgsize = body.GetBody().GetUserData().imgsize;
+		body.GetBody().GetUserData().imgsize = imgsize + 40;
+	}
+
 	function stop(){
 
 		$('#canvas').off("touchend");//移除添加子弹的touch事件
@@ -296,6 +305,7 @@ var game = function (img,imgsize) {
 			}
 		});
 	}
+
 	/**
 	* 添加碰撞检测事件
 	*/
@@ -323,6 +333,7 @@ var game = function (img,imgsize) {
 				//修改表情
 				var loverboy = (aName == "loverboy")?collisionA:collisionB;
 
+				expandCatSize(catBody);
 				loverboy.imgsrc = "static/images/kaixin.png";
 				clearTimeout(timer);
 				timer = setTimeout(changeFace,0.6*1000);
