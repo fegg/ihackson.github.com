@@ -47,13 +47,15 @@
 		}
 		</style>
 	</head>
-	<body  onload="init('static/images/lulin_new.png',200);">
+	<body  onload="init();">
 		<div class="scoreBox">
 			<span class="score-info">你的得分：</span>
 			<span id="score" class="score-info">0</span>
 		</div>
 		<div class="gameBox">
-			<canvas id="canvas"></canvas>
+			<canvas id="canvas">
+				
+			</canvas>
 		</div>
 		<div class="result HIDE">
 			<p> 哈哈，美男子成功逃脱！</p>
@@ -64,10 +66,11 @@
 			</p>
 		</div>
 
+		<script type="text/javascript" src="static/js/zepto_touch_fx.112.js"></script>
 		<script type="text/javascript" src="static/js/zepto.base64.min.js"></script>
 		<script type="text/javascript" src="static/js/zepto.ext.js"></script>
-		<script type="text/javascript" src="static/js/zepto_touch_fx.112.js"></script>
 		<script type="text/javascript" src="static/js/box2d.js"></script>
+		<script type="text/javascript" src="static/js/drawDashLine.js"></script>
 		<script type="text/javascript" src="static/js/boxdemo.js"></script>
 	</body>
 </html>

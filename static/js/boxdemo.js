@@ -1,59 +1,63 @@
-	function init(img,imgsize) {
-		if (!img) {
-			img = "jh.png";
-		}
-		if (!imgsize) {
-			imgsize = 16;
-		}
-		var weapon ={
-			obj : null,
-			status : true//true表示正在使用，false表示可以删除
-		};
-		var $score = $("#score");
-		// Define the canvas
-		var canvaselem = $("#canvas");
-		var canvaswidth = canvaselem.parent().width();
-		var canvasheight = canvaselem.parent().height();
-		var context = canvaselem[0].getContext("2d");
-		canvaselem.attr("width", canvaswidth).attr("height", canvasheight);
+function init(img,imgsize) {
+	if (!img) {
+		img = "static/images/lulin_new.png";
+	}
+	if (!imgsize) {
+		imgsize = 200;
+	}
+	var weapon ={
+		obj : null,
+		status : true//true表示正在使用，false表示可以删除
+	};
+	var deltaFloor = 80;//底部子弹区域高度
+	var speed = 10000000;
+	var catBody;
+	var $score = $("#score");
+	// Define the canvas
+	var canvaselem = $("#canvas");
+	var canvaswidth = canvaselem.parent().width();
+	var canvasheight = canvaselem.parent().height();
+	var context = canvaselem[0].getContext("2d");
+	canvaselem.attr("width", canvaswidth).attr("height", canvasheight);
 
-		// Define the world
-		var gravity = new b2Vec2(0,0);
-		var doSleep = false;
-		var world = new b2World(gravity, doSleep);
-		var deletionBuffer = 4;
 
-		//create ground
-		var fixDef = new b2FixtureDef;
-		fixDef.density = .5;
-		fixDef.friction = 0;
-		fixDef.restitution = 1;
-		var bodyDef = new b2BodyDef;
-		bodyDef.type = b2Body.b2_staticBody;
-		fixDef.shape = new b2PolygonShape;
-		fixDef.shape.SetAsBox(canvaswidth/2,2);
-		bodyDef.position.Set(canvaswidth/2, 0);
-		world.CreateBody(bodyDef).CreateFixture(fixDef);
+	// Define the world
+	var gravity = new b2Vec2(0,0);
+	var doSleep = false;
+	var world = new b2World(gravity, doSleep);
+	var deletionBuffer = 4;
 
-		var roofData = { name : "roof"};
-		bodyDef.userData = roofData;//设置顶部roof的name，用于碰撞检测
-		bodyDef.position.Set(canvaswidth/2, canvasheight - 2);
-		world.CreateBody(bodyDef).CreateFixture(fixDef);
-		bodyDef.userData = null;//将顶部的数据清空
+	//create ground
+	var fixDef = new b2FixtureDef;
+	fixDef.density = .5;
+	fixDef.friction = 0;
+	fixDef.restitution = 1;
+	var bodyDef = new b2BodyDef;
+	bodyDef.type = b2Body.b2_staticBody;
+	fixDef.shape = new b2PolygonShape;
+	fixDef.shape.SetAsBox(canvaswidth/2,2);
+	bodyDef.position.Set(canvaswidth/2, deltaFloor);
+	world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-		fixDef.shape.SetAsBox(2,canvasheight/2);
-		bodyDef.position.Set(0, canvasheight/2);
-		world.CreateBody(bodyDef).CreateFixture(fixDef);
-		bodyDef.position.Set(canvaswidth - 2, canvasheight/2);
-		world.CreateBody(bodyDef).CreateFixture(fixDef);
+	var roofData = { name : "roof"};
+	bodyDef.userData = roofData;//设置顶部roof的name，用于碰撞检测
+	bodyDef.position.Set(canvaswidth/2, canvasheight - 2);
+	world.CreateBody(bodyDef).CreateFixture(fixDef);
+	bodyDef.userData = null;//将顶部的数据清空
 
-		// 添加移动头像
-		addImageCircle();
+	fixDef.shape.SetAsBox(2,canvasheight/2);
+	bodyDef.position.Set(0, canvasheight/2);
+	world.CreateBody(bodyDef).CreateFixture(fixDef);
+	bodyDef.position.Set(canvaswidth - 2, canvasheight/2);
+	world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-	    //setup debug draw
-	    // This is used to draw the shapes for debugging. Here the main purpose is to 
-	    // verify that the images are in the right location 
-	    // It also lets us skip the clearing of the display since it takes care of it.
+	// 添加移动头像
+	catBody = addImageCircle();
+
+    //setup debug draw
+    // This is used to draw the shapes for debugging. Here the main purpose is to 
+    // verify that the images are in the right location 
+    // It also lets us skip the clearing of the display since it takes care of it.
 
 	 // The refresh rate of the display. Change the number to make it go faster
 	 z = window.setInterval(update2, (1000 / 60));
@@ -69,7 +73,7 @@
 
 	 	var circleSize = 30;//圆圈半径
 
-	 	var baseSpeed = 1000000;
+	 	var baseSpeed = speed*3000;
 
 	 	bodyDef.type = b2Body.b2_dynamicBody;
 	 	scale = circleSize;//Math.floor(Math.random()*circleSize) + circleSize/2;
@@ -77,7 +81,8 @@
 
 	 	bodyDef.position.x = scale*5;
 	 	bodyDef.position.y = scale*5;
-	 	var data = { imgsrc: img,
+	 	var data = { 
+	 		imgsrc: img,
 	 		imgsize: imgsize,
 	 		bodysize: circleSize,
 	 		name: "loverboy"
@@ -90,6 +95,7 @@
 			new b2Vec2(Math.random()*baseSpeed,Math.random()*baseSpeed),
 				body.GetBody().GetWorldCenter()
 		);
+		return body;
 	}
 
 	 // Update the world display and add new objects as appropriate
@@ -104,6 +110,10 @@
 	 // Draw the updated display
 	 // Also handle deletion of objects
 	 function processObjects() {
+
+		//绘制虚线
+		dashedLine("canvas",0,canvasheight-deltaFloor,canvaswidth,canvasheight-deltaFloor);
+
 	 	var node = world.GetBodyList();
 	 	//判断是否要删除发生了碰撞的weapon
 	 	if(weapon.status == false){
@@ -203,10 +213,12 @@
 		//获取touch的坐标
 		var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
 		//若超出可点范围，则不发射weapon
-		if(touchPosition.y > 320 && weapon.status == true && weapon.obj == null){
+		if(touchPosition.y > canvasheight-deltaFloor && weapon.status == true && weapon.obj == null){
+			touchPosition.y = canvasheight-deltaFloor-20;//画布高度-子弹区域高度-子弹半径
 			addWeapon(touchPosition);
 		}
 	});
+	
 	function addWeapon(touchPosition){
 		// create Weapon
 		var fixDef = new b2FixtureDef;
@@ -224,13 +236,14 @@
 		bodyDef.userData = data;
 		var body = world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-		var weaponBaseSpeed = 1000000;
+		var weaponBaseSpeed = speed*5000;
 		body.GetBody().ApplyImpulse(
 			new b2Vec2(0,weaponBaseSpeed),
 				body.GetBody().GetWorldCenter()
 		);
 		weapon.obj = body.GetBody();//设置weapon
 	}
+
 	function getPointOnCanvas(canvas, x, y) {
 		var bbox =canvas.getBoundingClientRect();
 		return { 
@@ -238,6 +251,21 @@
 			y: y - bbox.top  * (canvas.height / bbox.height)
 		};
 	}
+
+	/**
+	 * 添加随机大小的外力
+	 * @body 需要添加外力的物体
+	 */
+	 function addFore(body){
+	 	body.GetBody().ApplyImpulse(
+			new b2Vec2(speed+(Math.random()-0.5)*speed*3000,speed+(Math.random()-0.5)*speed*3000),
+				body.GetBody().GetWorldCenter()
+		);
+	 }
+
+	// window.test = function(){
+	// 	addFore(catBody);
+	// };
 
 	/**
 	 * 添加碰撞检测事件
@@ -256,9 +284,13 @@
 		    if ((aName == "loverboy" && bName == "weapon")
 		            || (bName == "loverboy" && aName == "weapon")) {
 		    	weapon.status = false;//将子弹设置为需要删除的状态
-		    	$score.html(Number($score.html())+1);
+		    	$score.html(Number($score.html())+1);//分数加1
+
+		    	//修改表情
+				catBody.getBody().userData.imgsrc = "static/images/lulin2_new.png";	
+
 		    }else if((aName == "roof" && bName == "weapon")
-		            || (bName == "roof" && aName == "weapon")){
+		            || (bName == "roof" && aName == "weapon")){//子弹跑出界面之外
 		    	weapon.status = false;//将子弹设置为需要删除的状态
 		    	$(".result").removeClass("HIDE").find(".final-score").html($score.html());
 		    	$score.html(0);
@@ -267,4 +299,5 @@
 		// set contact listener to the world
 		world.SetContactListener(listener);
 	})();
+
 };
