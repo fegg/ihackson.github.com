@@ -1,4 +1,4 @@
-function init(img,imgsize) {
+var game = function (img,imgsize) {
 	if (!img) {
 		img = "static/images/cat.png";
 	}
@@ -55,76 +55,76 @@ function init(img,imgsize) {
 	// 添加移动头像
 	catBody = addImageCircle();
 
-    //setup debug draw
-    // This is used to draw the shapes for debugging. Here the main purpose is to 
-    // verify that the images are in the right location 
-    // It also lets us skip the clearing of the display since it takes care of it.
+	//setup debug draw
+	// This is used to draw the shapes for debugging. Here the main purpose is to 
+	// verify that the images are in the right location 
+	// It also lets us skip the clearing of the display since it takes care of it.
 
-	 // The refresh rate of the display. Change the number to make it go faster
-	 z = window.setInterval(update2, (1000 / 60));
+	// The refresh rate of the display. Change the number to make it go faster
+	var z = window.setInterval(update2, (1000 / 60));
 
 	function addImageCircle() {
-    	// create a fixed circle - this will have an image in it
-	 	// create basic circle
-	 	var bodyDef = new b2BodyDef;
-	 	var fixDef = new b2FixtureDef;
-	 	fixDef.density = .5;//物体密度
-	 	fixDef.friction = 0;//摩擦力
-	 	fixDef.restitution = 1;//弹性
+	// create a fixed circle - this will have an image in it
+		// create basic circle
+		var bodyDef = new b2BodyDef;
+		var fixDef = new b2FixtureDef;
+		fixDef.density = .5;//物体密度
+		fixDef.friction = 0;//摩擦力
+		fixDef.restitution = 1;//弹性
 
-	 	var circleSize = 30;//圆圈半径
+		var circleSize = 30;//圆圈半径
 
-	 	var baseSpeed = speed*3000;
+		var baseSpeed = speed*3000;
 
-	 	bodyDef.type = b2Body.b2_dynamicBody;
-	 	scale = circleSize;//Math.floor(Math.random()*circleSize) + circleSize/2;
-	 	fixDef.shape = new b2CircleShape(scale);
+		bodyDef.type = b2Body.b2_dynamicBody;
+		scale = circleSize;//Math.floor(Math.random()*circleSize) + circleSize/2;
+		fixDef.shape = new b2CircleShape(scale);
 
-	 	bodyDef.position.x = scale*5;
-	 	bodyDef.position.y = scale*5;
-	 	var data = { 
-	 		imgsrc: img,
-	 		imgsize: imgsize,
-	 		bodysize: circleSize,
-	 		name: "loverboy"
-	 	}
-	 	bodyDef.userData = data;
+		bodyDef.position.x = scale*5;
+		bodyDef.position.y = scale*5;
+		var data = { 
+			imgsrc: img,
+			imgsize: imgsize,
+			bodysize: circleSize,
+			name: "loverboy"
+		}
+		bodyDef.userData = data;
 
-	 	var body = world.CreateBody(bodyDef).CreateFixture(fixDef);
+		var body = world.CreateBody(bodyDef).CreateFixture(fixDef);
 		//body.GetBody().SetMassData(new b2MassData(new b2Vec2(0,0),0,50));
-		body.GetBody().ApplyImpulse(
+		/*body.GetBody().ApplyImpulse(
 			new b2Vec2(Math.random()*baseSpeed,Math.random()*baseSpeed),
 				body.GetBody().GetWorldCenter()
-		);
+		);*/
 		return body;
 	}
 
-	 // Update the world display and add new objects as appropriate
-	 function update2() {
-	 	world.Step(1 / 60, 10, 10);
-	 	context.clearRect(0,0,canvaswidth,canvasheight);
-	 	world.ClearForces();
+	// Update the world display and add new objects as appropriate
+	function update2() {
+		world.Step(1 / 60, 10, 10);
+		context.clearRect(0,0,canvaswidth,canvasheight);
+		world.ClearForces();
 
-	 	processObjects();
-	 }
+		processObjects();
+	}
 
-	 // Draw the updated display
-	 // Also handle deletion of objects
-	 function processObjects() {
+	// Draw the updated display
+	// Also handle deletion of objects
+	function processObjects() {
 
 		//绘制虚线
 		dashedLine("canvas",0,canvasheight-deltaFloor,canvaswidth,canvasheight-deltaFloor);
 
-	 	var node = world.GetBodyList();
-	 	//判断是否要删除发生了碰撞的weapon
-	 	if(weapon.status == false){
-	 		world.DestroyBody(weapon.obj);
-	 		weapon.obj = null;
-	 		weapon.status = true;
-	 	}
-	 	while (node) {
-	 		var b = node;
-	 		node = node.GetNext();
+		var node = world.GetBodyList();
+		//判断是否要删除发生了碰撞的weapon
+		if(weapon.status == false){
+			world.DestroyBody(weapon.obj);
+			weapon.obj = null;
+			weapon.status = true;
+		}
+		while (node) {
+			var b = node;
+			node = node.GetNext();
 			var position = b.GetPosition();
 			// Draw the dynamic objects
 			if (b.GetType() == b2Body.b2_dynamicBody) {
@@ -171,21 +171,21 @@ function init(img,imgsize) {
 
 				}
 
-				 // draw a circle - a solid color, so we don't worry about rotation
-				 else if (shapeType == b2Shape.e_circleShape) {
-				 	context.strokeStyle = "#CCCCCC";
-				 	context.fillStyle = "#FF8800";
-				 	context.beginPath();
-				 	context.arc(position.x,flipy,shape.GetRadius(),0,Math.PI*2,true);
-				 	context.closePath();
-				 	context.stroke();
-				 	context.fill();
-				 }
+				// draw a circle - a solid color, so we don't worry about rotation
+				else if (shapeType == b2Shape.e_circleShape) {
+					context.strokeStyle = "#CCCCCC";
+					context.fillStyle = "#FF8800";
+					context.beginPath();
+					context.arc(position.x,flipy,shape.GetRadius(),0,Math.PI*2,true);
+					context.closePath();
+					context.stroke();
+					context.fill();
+				}
 
-				 // draw a polygon 
-				 else if (shapeType == b2Shape.e_polygonShape) {
-				 	var vert = shape.GetVertices();
-				 	context.beginPath();
+				// draw a polygon 
+				else if (shapeType == b2Shape.e_polygonShape) {
+					var vert = shape.GetVertices();
+					context.beginPath();
 
 					// Handle the possible rotation of the polygon and draw it
 					b2Math.MulMV(b.m_xf.R,vert[0]);
@@ -206,20 +206,6 @@ function init(img,imgsize) {
 		}
 	}
 
-	/**
-	 * 添加touch事件，在canvas特定区域生成子弹
-	 * 
-	 */
-	$('#canvas').on("touchend",function(e){
-		//获取touch的坐标
-		var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
-		//若超出可点范围，则不发射weapon
-		if(touchPosition.y > canvasheight-deltaFloor && weapon.status == true && weapon.obj == null){
-			touchPosition.y = canvasheight-deltaFloor-20;//画布高度-子弹区域高度-子弹半径
-			addWeapon(touchPosition);
-		}
-	});
-	
 	function addWeapon(touchPosition){
 		// create Weapon
 		var fixDef = new b2FixtureDef;
@@ -235,8 +221,8 @@ function init(img,imgsize) {
 		bodyDef.position.y = canvasheight- touchPosition.y;//canvas（左上角）和box2d（左下角）的原点不一样
 		var data = { 
 			imgsrc: weaponImgSrc,
-	 		imgsize: 120,
-	 		bodysize: scale,
+			imgsize: 120,
+			bodysize: scale,
 			name: "weapon"
 		};
 		bodyDef.userData = data;
@@ -259,34 +245,60 @@ function init(img,imgsize) {
 	}
 
 	/**
-	 * 添加随机大小的外力
-	 * @body 需要添加外力的物体
-	 * 
-	 */
-	 function addFore(body){
-	 	body.GetBody().ApplyImpulse(
+	* 添加随机大小的外力
+	* @body 需要添加外力的物体
+	* 
+	*/
+	function addFore(body){
+		body.GetBody().ApplyImpulse(
 			new b2Vec2(speed+(Math.random()-0.5)*speed*3000,speed+(Math.random()-0.5)*speed*3000),
 				body.GetBody().GetWorldCenter()
 		);
-	 }
+	}
 
 	// window.test = function(){
-	// 	addFore(catBody);
+	//	addFore(catBody);
 	// };
 
-	function changeFace(){
-		catBody.GetBody().GetUserData().imgsrc = "static/images/cat.png";
+	function changeFace(img){
+		var img = img || "cat";
+		catBody.GetBody().GetUserData().imgsrc = "static/images/"+img+".png";
 	}
 	function stop(){
+
 		$('#canvas').off("touchend");//移除添加子弹的touch事件
 		catBody.GetBody().SetLinearVelocity(
 			new b2Vec2(0 , 0),catBody.GetBody().GetWorldCenter()
 		);
-		catBody.GetBody().GetUserData().imgsrc = "static/images/nanguo.png";
+		changeFace("nanguo");
+
+		// clearInterval(z);
+		// update2();
+	}
+	
+	function start(){
+
+		changeFace("cat");
+
+		addFore(catBody);
+
+		/**
+		* 添加touch事件，在canvas特定区域生成子弹
+		* 
+		*/
+		$('#canvas').on("touchend",function(e){
+			//获取touch的坐标
+			var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+			//若超出可点范围，则不发射weapon
+			if(touchPosition.y > canvasheight-deltaFloor && weapon.status == true && weapon.obj == null){
+				touchPosition.y = canvasheight-deltaFloor-20;//画布高度-子弹区域高度-子弹半径
+				addWeapon(touchPosition);
+			}
+		});
 	}
 	/**
-	 * 添加碰撞检测事件
-	 */
+	* 添加碰撞检测事件
+	*/
 	(function collisionDetect(){
 		// Add listeners for contact
 		var listener = new b2ContactListener;
@@ -299,27 +311,41 @@ function init(img,imgsize) {
 			var bName = (collisionB != undefined)?collisionB.name:"";
 			
 			//子弹打中了美男子
-		    if ((aName == "loverboy" && bName == "weapon")
-		            || (bName == "loverboy" && aName == "weapon")) {
-		    	weapon.status = false;//将子弹设置为需要删除的状态
-		    	$score.html(Number($score.html())+1);//分数加1
+			if ((aName == "loverboy" && bName == "weapon")
+					|| (bName == "loverboy" && aName == "weapon")) {
+				weapon.status = false;//将子弹设置为需要删除的状态
 
-		    	//修改表情
-		    	var loverboy = (aName == "loverboy")?collisionA:collisionB;
+				var score = Number($score.html());
+
+				score + 1;
+				$score.html(score);//分数加1
+
+				//修改表情
+				var loverboy = (aName == "loverboy")?collisionA:collisionB;
+
 				loverboy.imgsrc = "static/images/kaixin.png";
 				clearTimeout(timer);
 				timer = setTimeout(changeFace,0.6*1000);
 
-		    }else if((aName == "roof" && bName == "weapon")
-		            || (bName == "roof" && aName == "weapon")){//子弹跑出界面之外
-		    	weapon.status = false;//将子弹设置为需要删除的状态
-		    	$(".result").removeClass("HIDE").find(".final-score").html($score.html());
-		    	$score.html(0);
-		    	stop();
-		    }
+			}else if((aName == "roof" && bName == "weapon")
+					|| (bName == "roof" && aName == "weapon")){//子弹跑出界面之外
+				weapon.status = false;//将子弹设置为需要删除的状态
+				$(".result").removeClass("HIDE").find(".final-score").html($score.html());
+				$score.html(0);
+				stop();
+			}
 		}
 		// set contact listener to the world
 		world.SetContactListener(listener);
 	})();
 
-};
+	return {
+		start: start,
+		stop: stop
+	};
+}();
+
+var init = function () {
+	$(".result").addClass("HIDE")
+	game.start();
+}
