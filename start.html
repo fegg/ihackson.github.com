@@ -84,6 +84,12 @@
 			if(data) {
 				$leftInfo.text(data.desc);
 				$rightInfo.text(data.name);
+				if(window.localStorage) {
+					localStorage.setItem('gamerName', data.name);
+					localStorage.setItem('gamerDesc', data.desc);
+				} else {
+
+				}
 			}
 			
 		});

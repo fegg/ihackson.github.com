@@ -461,8 +461,12 @@ var game = function () {
 
 
 	function stop(){
-
-		$(".result").removeClass("HIDE").find(".final-score").html($score.html());
+		$(".result").removeClass("HIDE")
+			.find(".final-score")
+			.html($score.html())
+			.end()
+			.find('.random-message')
+			.text(localStorage.getItem('gamerName'));
 
 		$('#canvas').off("click");//移除添加子弹的touch事件
 		cat.GetBody().SetLinearVelocity(
