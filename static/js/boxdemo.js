@@ -109,12 +109,51 @@ var game = function () {
 		return body;
 	}
 
+	function addWeapon(touchPosition){
+		// create Weapon
+		var fixDef = new b2FixtureDef;
+		fixDef.density = .5;
+		fixDef.friction = 0;
+		fixDef.restitution = 1;
+		fixDef.isSensor = true;
+
+		var bodyDef = new b2BodyDef;
+		bodyDef.type = b2Body.b2_dynamicBody;
+		scale = 20;//武器半径
+		fixDef.shape = new shapes.b2CircleShape(scale);
+		bodyDef.position.x = touchPosition.x;
+		bodyDef.position.y = canvasheight- touchPosition.y;//canvas（左上角）和box2d（左下角）的原点不一样
+		var data = { 
+			imgsrc: weaponImgSrc,
+			imgsize: 120,
+			bodysize: scale,
+			name: "weapon"
+		};
+		bodyDef.userData = data;
+		var body = world.CreateBody(bodyDef).CreateFixture(fixDef);
+
+		var weaponBaseSpeed = speed*5000;
+		body.GetBody().ApplyImpulse(
+			new b2Vec2(0,weaponBaseSpeed),
+				body.GetBody().GetWorldCenter()
+		);
+		weapon.obj = body.GetBody();//设置weapon
+	}
+
+	function getPointOnCanvas(canvas, x, y) {
+		var bbox =canvas.getBoundingClientRect();
+		return { 
+			x: x - bbox.left * (canvas.width / bbox.width),
+			y: y - bbox.top  * (canvas.height / bbox.height)
+		};
+	}
+
 	// Update the world display and add new objects as appropriate
 	function update2() {
 		world.Step(1 / 60, 10, 10);
 		context.clearRect(0,0,canvaswidth,canvasheight);
 		world.ClearForces();
-		world.DrawDebugData();
+		// world.DrawDebugData();
 
 		processObjects();
 	}
@@ -216,45 +255,6 @@ var game = function () {
 				}
 			}
 		}
-	}
-
-	function addWeapon(touchPosition){
-		// create Weapon
-		var fixDef = new b2FixtureDef;
-		fixDef.density = .5;
-		fixDef.friction = 0;
-		fixDef.restitution = 1;
-		fixDef.isSensor = true;
-
-		var bodyDef = new b2BodyDef;
-		bodyDef.type = b2Body.b2_dynamicBody;
-		scale = 20;//武器半径
-		fixDef.shape = new shapes.b2CircleShape(scale);
-		bodyDef.position.x = touchPosition.x;
-		bodyDef.position.y = canvasheight- touchPosition.y;//canvas（左上角）和box2d（左下角）的原点不一样
-		var data = { 
-			imgsrc: weaponImgSrc,
-			imgsize: 120,
-			bodysize: scale,
-			name: "weapon"
-		};
-		bodyDef.userData = data;
-		var body = world.CreateBody(bodyDef).CreateFixture(fixDef);
-
-		var weaponBaseSpeed = speed*5000;
-		body.GetBody().ApplyImpulse(
-			new b2Vec2(0,weaponBaseSpeed),
-				body.GetBody().GetWorldCenter()
-		);
-		weapon.obj = body.GetBody();//设置weapon
-	}
-
-	function getPointOnCanvas(canvas, x, y) {
-		var bbox =canvas.getBoundingClientRect();
-		return { 
-			x: x - bbox.left * (canvas.width / bbox.width),
-			y: y - bbox.top  * (canvas.height / bbox.height)
-		};
 	}
 
 	/**
