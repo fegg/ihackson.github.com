@@ -5,14 +5,96 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>Demo</title>
 	<link rel="stylesheet" href="static/css/reset.css">
+	<link rel="stylesheet" href="static/css/common.css">
 	<style>
-		
+		.wrap {
+			width: 310px;
+			height: 446px;
+			border: 5px solid #fff2df;
+			border-radius: 10px;
+			background: #fff8ee;
+			padding: 0 5px;
+		}
+		.rank-img {
+			display: block;
+			width: 120px;
+			height: 98px;
+			margin: -50px auto 0;
+		}
+		.rank-title {
+			display: block;
+			width: 95px;
+			height: 26px;
+			margin: 10px auto 0;
+		}
+		.rank-top {
+			padding-bottom: 15px;
+			border-bottom: 3px solid #ffeacb;
+		}
+
+		.rank-item {
+			height: 71px;
+			line-height: 71px;
+			border-bottom: 1px solid #e6ddd0;
+		}
+		.item-num {
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			line-height: 24px;
+			color: #fff;
+			text-align: center;
+			background: #ff8383;
+			border-radius: 50%;
+		}
+		.item-photo {
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+		}
 	</style>
 </head>
 <body>
-	<div class="rank">
-		<div>
-			<img src="">
+	<div class="main">
+		<div class="wrap">
+			<div class="rank-top">
+				<img class="rank-img" src="static/images/zhangzui.png">
+				<img class="rank-title" src="static/images/rank-title.png">	
+			</div>
+			<div class="rank-content">
+				<ul class="rank-items clearfix">
+					<li class="rank-item">
+						<span class="item-num">1</span>
+						<img class="item-photo" src="static/images/photo.png">
+						<span class="item-name"></span>
+						<span class="item-score"></span>
+					</li>
+					<li class="rank-item">
+						<span class="item-num">2</span>
+						<img class="item-photo" src="static/images/photo.png">
+						<span class="item-name"></span>
+						<span class="item-score"></span>
+					</li>
+					<li class="rank-item">
+						<span class="item-num">3</span>
+						<img class="item-photo" src="static/images/photo.png">
+						<span class="item-name"></span>
+						<span class="item-score"></span>
+					</li>
+					<li class="rank-item">
+						<span class="item-num">4</span>
+						<img class="item-photo" src="static/images/photo.png">
+						<span class="item-name"></span>
+						<span class="item-score"></span>
+					</li>
+					<li class="rank-item">
+						<span class="item-num">5</span>
+						<img class="item-photo" src="static/images/photo.png">
+						<span class="item-name"></span>
+						<span class="item-score"></span>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 
