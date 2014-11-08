@@ -1,18 +1,19 @@
 var game = function () {
 	var b2Vec2 =Box2D.Common.Math.b2Vec2;  
-    var b2AABB =Box2D.Collision.b2AABB;  
-    var b2BodyDef =Box2D.Dynamics.b2BodyDef;  
-    var b2Body =Box2D.Dynamics.b2Body;  
-    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;  
-    var b2Fixture =Box2D.Dynamics.b2Fixture;  
-    var b2World =Box2D.Dynamics.b2World;  
-    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;  
+	var b2AABB =Box2D.Collision.b2AABB;  
+	var b2BodyDef =Box2D.Dynamics.b2BodyDef;  
+	var b2Body =Box2D.Dynamics.b2Body;  
+	var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;  
+	var b2Fixture =Box2D.Dynamics.b2Fixture;  
+	var b2World =Box2D.Dynamics.b2World;  
+	var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;  
 	var b2DebugDraw =Box2D.Dynamics.b2DebugDraw;
 	var shapes = Box2D.Collision.Shapes;
 
 	var animateTimer;
 	var img = "static/images/cat.png";
 	var imgsize = 230;
+	var circleSize = 30;//圆圈半径
 	var weapon ={
 		obj : null,
 		status : true//true表示正在使用，false表示可以删除
@@ -43,7 +44,6 @@ var game = function () {
 	var gravity = new b2Vec2(0,0);
 	var doSleep = false;
 	var world = new b2World(gravity, doSleep);
-	var deletionBuffer = 4;
 
 	//create ground
 	var fixDef = new b2FixtureDef;
@@ -86,8 +86,6 @@ var game = function () {
 		fixDef.friction = 0;//摩擦力
 		fixDef.restitution = 1;//弹性
 
-		var circleSize = 30;//圆圈半径
-
 		var baseSpeed = speed*3000;
 
 		bodyDef.type = b2Body.b2_dynamicBody;
@@ -117,12 +115,13 @@ var game = function () {
 	 * 添加发射的武器
 	 */
 	function addWeapon(touchPosition){
+		touchPosition = touchPosition || {x:canvaswidth/2,y:canvasheight};
 		// create Weapon
 		var fixDef = new b2FixtureDef;
 		fixDef.density = .5;
 		fixDef.friction = 0;
 		fixDef.restitution = 1;
-		fixDef.isSensor = true;
+		// fixDef.isSensor = true;
 
 		var bodyDef = new b2BodyDef;
 		bodyDef.type = b2Body.b2_dynamicBody;
@@ -322,10 +321,6 @@ var game = function () {
 		);
 	}
 
-	// window.test = function(){
-	//	addFore(cat);
-	// };
-
 	function changeFace(img, body){
 		var img = img || "cat";
 		var body = body || cat;
@@ -405,16 +400,23 @@ var game = function () {
 		var info = stateList[score];
 
 		if (!info && skipNum <= 0) {
-			info = dStateList[random(4)];
-			console.log(1)
+			if (cat.GetShape().GetRadius() > circleSize) {
+				info = dStateList[1];
+			} else {
+				info = dStateList[random(4)];
+			}
+		} else {
+			if (cat.GetShape().GetRadius() < 7.5) {
+				info = dStateList[5];
+			}
 		}
 
 		if (!info) {
 			skipNum--;
-			console.log(2)
+
 			return;
 		}
-console.log(3)
+
 		skipNum = 3 + random(3);
 
 		if ((info.when && info.when == 'next') || info.tar == 'cake') {
@@ -469,8 +471,6 @@ console.log(3)
 		);
 		changeFace("nanguo");
 
-		// clearInterval(z);
-		// update2();
 	}
 	
 	function start(){
@@ -511,7 +511,7 @@ console.log(3)
 	(function collisionDetect(){
 		// Add listeners for contact
 		var listener = new Box2D.Dynamics.b2ContactListener;
-		var timer ;
+		var timer;
 		listener.BeginContact = function(contact) {
 			var a = contact.GetFixtureA();
 			var b = contact.GetFixtureB()
@@ -527,7 +527,7 @@ console.log(3)
 				weapon.status = false;//将子弹设置为需要删除的状态
 
 				if(endCmd && endCmd()){
-					stop();
+					setTimeout(stop,0);
 					return;
 				}
 
@@ -565,13 +565,13 @@ console.log(3)
 	})();
 
 	function debugDraw() {  
-	    var debugDraw = new b2DebugDraw();  
-	    debugDraw.SetSprite(document.getElementById("canvas").getContext("2d"));  
-	    debugDraw.SetDrawScale(1);  
-	    // debugDraw.SetFillAlpha(0.5);  
-	    // debugDraw.SetLineThickness(1.0);  
-	    debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);  
-	    world.SetDebugDraw(debugDraw);  
+		var debugDraw = new b2DebugDraw();  
+		debugDraw.SetSprite(document.getElementById("canvas").getContext("2d"));  
+		debugDraw.SetDrawScale(1);  
+		// debugDraw.SetFillAlpha(0.5);  
+		// debugDraw.SetLineThickness(1.0);  
+		debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);  
+		world.SetDebugDraw(debugDraw);  
 	}
 	debugDraw();
 
@@ -580,6 +580,7 @@ console.log(3)
 		start: start,
 		stop: stop,
 		addFore: addFore,
+		addWeapon: addWeapon,
 		getCat: function(){
 			return cat;
 		}
