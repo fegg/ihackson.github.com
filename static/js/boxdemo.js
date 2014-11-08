@@ -1,4 +1,15 @@
 var game = function (img,imgsize) {
+	var b2Vec2 =Box2D.Common.Math.b2Vec2;  
+    var b2AABB =Box2D.Collision.b2AABB;  
+    var b2BodyDef =Box2D.Dynamics.b2BodyDef;  
+    var b2Body =Box2D.Dynamics.b2Body;  
+    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;  
+    var b2Fixture =Box2D.Dynamics.b2Fixture;  
+    var b2World =Box2D.Dynamics.b2World;  
+    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;  
+	var b2DebugDraw =Box2D.Dynamics.b2DebugDraw;
+	var shapes = Box2D.Collision.Shapes;
+
 	if (!img) {
 		img = "static/images/cat.png";
 	}
@@ -81,7 +92,7 @@ var game = function (img,imgsize) {
 
 		bodyDef.type = b2Body.b2_dynamicBody;
 		scale = circleSize;//Math.floor(Math.random()*circleSize) + circleSize/2;
-		fixDef.shape = new b2CircleShape(scale);
+		fixDef.shape = new shapes.b2CircleShape(scale);
 
 		bodyDef.position.x = scale*5;
 		bodyDef.position.y = scale*5;
@@ -107,6 +118,7 @@ var game = function (img,imgsize) {
 		world.Step(1 / 60, 10, 10);
 		context.clearRect(0,0,canvaswidth,canvasheight);
 		world.ClearForces();
+		world.DrawDebugData();
 
 		processObjects();
 	}
@@ -148,7 +160,7 @@ var game = function (img,imgsize) {
 						var other = edge.other;
 						if (other.GetType() == b2Body.b2_dynamicBody) {
 							var othershape = other.GetFixtureList().GetShape();
-							if (othershape.GetType() == b2Shape.e_polygonShape) {
+							if (othershape.GetType() == shapes.b2Shape.e_polygonShape) {
 								world.DestroyBody(other);
 								break;	
 							}
@@ -175,7 +187,7 @@ var game = function (img,imgsize) {
 				}
 
 				// draw a circle - a solid color, so we don't worry about rotation
-				else if (shapeType == b2Shape.e_circleShape) {
+				else if (shapeType == shapes.b2Shape.e_circleShape) {
 					context.strokeStyle = "#CCCCCC";
 					context.fillStyle = "#FF8800";
 					context.beginPath();
@@ -186,7 +198,7 @@ var game = function (img,imgsize) {
 				}
 
 				// draw a polygon 
-				else if (shapeType == b2Shape.e_polygonShape) {
+				else if (shapeType == shapes.b2Shape.e_polygonShape) {
 					var vert = shape.GetVertices();
 					context.beginPath();
 
@@ -219,7 +231,7 @@ var game = function (img,imgsize) {
 		var bodyDef = new b2BodyDef;
 		bodyDef.type = b2Body.b2_dynamicBody;
 		scale = 20;//武器半径
-		fixDef.shape = new b2CircleShape(scale);
+		fixDef.shape = new shapes.b2CircleShape(scale);
 		bodyDef.position.x = touchPosition.x;
 		bodyDef.position.y = canvasheight- touchPosition.y;//canvas（左上角）和box2d（左下角）的原点不一样
 		var data = { 
@@ -314,7 +326,7 @@ var game = function (img,imgsize) {
 	*/
 	(function collisionDetect(){
 		// Add listeners for contact
-		var listener = new b2ContactListener;
+		var listener = new Box2D.Dynamics.b2ContactListener;
 		var timer ;
 		listener.BeginContact = function(contact) {
 			var collisionA = contact.GetFixtureA().GetBody().GetUserData();//发生碰撞的两个物体之一
@@ -355,10 +367,23 @@ var game = function (img,imgsize) {
 		world.SetContactListener(listener);
 	})();
 
+	function debugDraw() {  
+	    var debugDraw = new b2DebugDraw();  
+	    debugDraw.SetSprite(document.getElementById("canvas").getContext("2d"));  
+	    debugDraw.SetDrawScale(1);  
+	    // debugDraw.SetFillAlpha(0.5);  
+	    // debugDraw.SetLineThickness(1.0);  
+	    debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);  
+	    world.SetDebugDraw(debugDraw);  
+	}
+
+	debugDraw();
+
 	return {
 		start: start,
 		stop: stop,
-		cat: catBody
+		cat: catBody,
+		world: world
 	};
 }();
 
