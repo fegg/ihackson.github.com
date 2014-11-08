@@ -25,7 +25,6 @@
 	<script src="http://s0.qhimg.com/lib/jquery/1102.js"></script>
 	<script>
 	$(function() {
-
 		var $gameName = $('.game-name'),
 			$start = $('.start'),
 			$tip = $('.tip'),
@@ -36,7 +35,7 @@
 		$start.on("webkitTransitionEnd", function() {
 			$tip.fadeIn();
 			setTimeout(function() {
-				// window.location.href = 'index.html';
+				window.location.href = 'index.html';
 			}, 3000);
 		});
 
