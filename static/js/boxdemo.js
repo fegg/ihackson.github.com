@@ -210,7 +210,7 @@ function init(img,imgsize) {
 	 * 添加touch事件，在canvas特定区域生成子弹
 	 * 
 	 */
-	$('#canvas').bind("touchend",function(e){
+	$('#canvas').on("touchend",function(e){
 		//获取touch的坐标
 		var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
 		//若超出可点范围，则不发射weapon
@@ -261,6 +261,7 @@ function init(img,imgsize) {
 	/**
 	 * 添加随机大小的外力
 	 * @body 需要添加外力的物体
+	 * 
 	 */
 	 function addFore(body){
 	 	body.GetBody().ApplyImpulse(
@@ -275,6 +276,13 @@ function init(img,imgsize) {
 
 	function changeFace(){
 		catBody.GetBody().GetUserData().imgsrc = "static/images/cat.png";
+	}
+	function stop(){
+		$('#canvas').off("touchend");//移除添加子弹的touch事件
+		catBody.GetBody().SetLinearVelocity(
+			new b2Vec2(0 , 0),catBody.GetBody().GetWorldCenter()
+		);
+		catBody.GetBody().GetUserData().imgsrc = "static/images/nanguo.png";
 	}
 	/**
 	 * 添加碰撞检测事件
@@ -307,6 +315,7 @@ function init(img,imgsize) {
 		    	weapon.status = false;//将子弹设置为需要删除的状态
 		    	$(".result").removeClass("HIDE").find(".final-score").html($score.html());
 		    	$score.html(0);
+		    	stop();
 		    }
 		}
 		// set contact listener to the world
