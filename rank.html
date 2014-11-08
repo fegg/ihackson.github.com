@@ -6,68 +6,7 @@
 	<title>Demo</title>
 	<link rel="stylesheet" href="static/css/reset.css">
 	<link rel="stylesheet" href="static/css/common.css">
-	<style>
-		.wrap {
-			width: 310px;
-			min-height: 446px;
-			border: 5px solid #fff2df;
-			border-radius: 10px;
-			background: #fff8ee;
-			padding: 0 5px;
-		}
-		.rank-img {
-			display: block;
-			width: 120px;
-			height: 98px;
-			margin: -50px auto 0;
-		}
-		.rank-title {
-			display: block;
-			width: 95px;
-			height: 26px;
-			margin: 10px auto 0;
-		}
-		.rank-top {
-			padding-bottom: 15px;
-			border-bottom: 3px solid #ffeacb;
-		}
-
-		.rank-item {
-			height: 71px;
-			border-bottom: 1px solid #e6ddd0;
-		}
-		.item {
-			float: left;
-		}
-		.item-score {
-			float: right;
-		}
-		.item-num {
-			width: 24px;
-			height: 24px;
-			margin-top: 24px;
-			line-height: 24px;
-			color: #fff;
-			text-align: center;
-			background: #ff8383;
-			border-radius: 50%;
-		}
-		.item-photo {
-			width: 50px;
-			height: 50px;
-			margin: 11px 18px 0 18px; 
-			border-radius: 50%;
-		}
-		.item-name,
-		.item-score {
-			margin-top: 26px;
-			font-size: 18px;
-			color: #222;
-		}
-		.item-last {
-			background: #ccc;
-		}
-	</style>
+	<link rel="stylesheet" href="static/css/rank.css">
 </head>
 <body>
 	<div class="main">
@@ -77,38 +16,7 @@
 				<img class="rank-title" src="static/images/rank-title.png">	
 			</div>
 			<div class="rank-content">
-				<ul class="rank-items clearfix">
-					<li class="rank-item">
-						<span class="item item-num">1</span>
-						<img class="item item-photo" src="static/images/photo.png">
-						<span class="item item-name">逗比的炜炜</span>
-						<span class="item-score">180</span>
-					</li>
-					<li class="rank-item">
-						<span class="item item-num">2</span>
-						<img class="item item-photo" src="static/images/photo.png">
-						<span class="item item-name">逗比的炜炜</span>
-						<span class="item-score">180</span>
-					</li>
-					<li class="rank-item">
-						<span class="item item-num">3</span>
-						<img class="item item-photo" src="static/images/photo.png">
-						<span class="item item-name">逗比的炜炜</span>
-						<span class="item-score">180</span>
-					</li>
-					<li class="rank-item">
-						<span class="item item-num item-last">4</span>
-						<img class="item item-photo" src="static/images/photo.png">
-						<span class="item item-name">逗比的炜炜</span>
-						<span class="item-score">180</span>
-					</li>
-					<li class="rank-item">
-						<span class="item item-num item-last">5</span>
-						<img class="item item-photo" src="static/images/photo.png">
-						<span class="item item-name">逗比的炜炜</span>
-						<span class="item-score">180</span>
-					</li>
-				</ul>
+				<ul class="rank-items clearfix"></ul>
 			</div>
 		</div>
 	</div>
@@ -116,14 +24,52 @@
 	<script src="http://s0.qhimg.com/lib/jquery/1102.js"></script>
 	<script>
 	$(function() {
+		var $items = $('.rank-items'),
+			oneItem = $('#oneItem').html(),
+			twoItem = $('#twoItem').html();
+
 		$.ajax({
 			url: 'http://www.60sky.com/api',
 			dataType: 'jsonp',
 			data: { username: 'lulin006', score: 40, category: 'normal' }
 		}).done(function(data) {
-			
+			format(data.record_list);
 		});
+
+		function format(data) {
+			var html = [];
+			for(var i = 0; i < 3; i++) {
+				var tmp = data[i];
+				html.push(oneItem.replace('{num}', (i+1))
+					.replace('{name}', tmp.username)
+					.replace('{score}', tmp.score));
+			}
+			for(var i = 3; i < 5; i++) {
+				var tmp = data[i];
+				html.push(twoItem.replace('{num}', (i+1))
+					.replace('{name}', tmp.username)
+					.replace('{score}', tmp.score));
+			}
+			html = html.join('');
+			$items.append(html);
+		}
 	});
+	</script>
+	<script id="oneItem" type="text/template">
+		<li class="rank-item">
+			<span class="item item-num">{num}</span>
+			<img class="item item-photo" src="static/images/photo.png">
+			<span class="item item-name">{name}</span>
+			<span class="item-score">{score}</span>
+		</li>
+	</script>
+	<script id="twoItem" type="text/template">
+		<li class="rank-item">
+			<span class="item item-num item-last">{num}</span>
+			<img class="item item-photo" src="static/images/photo.png">
+			<span class="item item-name">{name}</span>
+			<span class="item-score">{score}</span>
+		</li>
 	</script>
 </body>
 </html>
