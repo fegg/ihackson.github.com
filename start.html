@@ -11,7 +11,7 @@
 <body>
     <div class="main">
     	<div class="play">
-    		<!-- <audio id="login-audio" src="static/music/test.mp3" autoplay loop></audio> -->
+    		<audio id="login-audio" src="static/music/test.mp3" autoplay loop></audio>
     	</div>
 		<div class="content">
 			<img class="game-name" src="static/images/game-name.png" alt="宅猫喜欢吃甜食">
@@ -49,29 +49,29 @@
 			return false;
 		});
 
-		// var interval = null;
-		// var rotate = 0;
-		// startPlay();
-		// function startPlay() {
-		// 	if(loginAudio.paused === true) {
-		// 		loginAudio.play();
-		// 	}
-		// 	interval = setInterval(function() {
-		// 		$play.css('-webkit-transform', 'rotate('+(rotate+=7)+'deg)');
-		// 	}, 100);
-		// }
-		// function endPlay() {
-		// 	clearInterval(interval);
-		// 	loginAudio.pause();
-		// }
+		var interval = null;
+		var rotate = 0;
+		startPlay();
+		function startPlay() {
+			if(loginAudio.paused === true) {
+				loginAudio.play();
+			}
+			interval = setInterval(function() {
+				$play.css('-webkit-transform', 'rotate('+(rotate+=7)+'deg)');
+			}, 100);
+		}
+		function endPlay() {
+			clearInterval(interval);
+			loginAudio.pause();
+		}
 
-		// $play.click(function() {
-		// 	if(loginAudio.paused === false) {
-		// 		endPlay();
-		// 	} else {
-		// 		startPlay();
-		// 	}
-		// });
+		$play.click(function() {
+			if(loginAudio.paused === false) {
+				endPlay();
+			} else {
+				startPlay();
+			}
+		});
 
 		var $leftInfo = $('.tip-left-info'),
 			$rightInfo = $('.tip-right-info');
