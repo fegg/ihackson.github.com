@@ -5,7 +5,6 @@
 		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 		<link rel="stylesheet" href="static/css/reset.css">
 		<link rel="stylesheet" href="static/css/common.css">
-		<link rel="stylesheet" href="static/css/start.css">
 		<title>box2d-demo</title>
 		<style type="text/css">
 		html,body{
@@ -46,21 +45,15 @@
 			height: 200px;
 			background-color: rgba(255,255,255,.5);
 		}
+
+		.main {
+			padding: 0;
+			display: block;
+		}
 		</style>
 	</head>
 	<body  onload="init()">
-		<div class="main start-main">
-			<div class="content">
-				<img class="game-name" src="static/images/game-name.png" alt="宅猫喜欢吃甜食">
-				<img class="login-cat" src="static/images/login-cat.png" alt="猫">
-				<img class="start" src="static/images/start.png" alt="开始">
-				<div class="tip" style="display:none;">
-					<p class="login-name">闷骚的小猫咪</p>
-				</div>
-			</div>
-		</div>
-		
-		<div class="page main" style="display:none;">
+		<div class="page main">
 			<div class="scoreBox">
 				<span class="score-info">你的得分：</span>
 				<span id="score" class="score-info">0</span>
@@ -79,7 +72,7 @@
 				</p>
 			</div>
 		</div>
-
+		
 		<style type="text/css">
 			/*分享弹层*/
 
@@ -405,35 +398,13 @@
 				}
 			};
 		</script>
-		
-		<script src="http://s0.qhimg.com/lib/jquery/1102.js"></script>
+
 		<script type="text/javascript" src="static/js/zepto_touch_fx.112.js"></script>
 		<script type="text/javascript" src="static/js/zepto.base64.min.js"></script>
 		<script type="text/javascript" src="static/js/zepto.ext.js"></script>
 		<script type="text/javascript" src="static/js/box2d.js"></script>
 		<script type="text/javascript" src="static/js/drawDashLine.js"></script>
 		<script type="text/javascript" src="static/js/boxdemo.js"></script>
-		
-		<script>
-			$(function() {
-				var $gameName = $('.game-name'),
-					$start = $('.start'),
-					$tip = $('.tip');
-
-				$start.on("webkitTransitionEnd", function() {
-					$tip.fadeIn();
-					setTimeout(function() {
-						$('.start-main').hide();
-						$('.page').css('display', 'block');
-					}, 3000);
-				});
-
-				$('.start').click(function(e) {
-					$start.addClass('active');
-					return false;
-				});
-			});
-		</script>
 
 		<script>
 			(function(){
