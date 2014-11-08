@@ -306,14 +306,16 @@ var game = function (img,imgsize) {
 		var positionX = position.x + "px";
 		console.log(positionY+".."+positionX);
 		$("#score-box").css("left",positionX).css("bottom",positionY);
-		$("#score-box").animate({opacity:1}, 5000,'ease-in');
+		// $("#score-box").animate({opacity:1}, 500,'ease-in');
+		$("#score-box").fadeIn();
 	}
 	window.test = function(){
 		clearTimeout(animateTimer);
 		showScore(catBody, 10);
-		animateTimer = setTimeout(function(){
-			$("#score-box").animate({opacity:0}, 5000,'ease-out');
-		},500);
+		// animateTimer = setTimeout(function(){
+		// 	$("#score-box").animate({opacity:0}, 5000,'ease-out');
+		// },500);
+		animateTimer = setTimeout(function(){$("#score-box").fadeOut();},1000);
 	}
 
 	function stop(){
