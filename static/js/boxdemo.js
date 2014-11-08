@@ -306,10 +306,14 @@ var game = function () {
 		cake: cakeInfo
 	};
 	var stateList = {
+		1: {
+			type: 'size',
+			tar: 'cat',
+			cmd: '-'
+		},
 		3: {
 			type: 'move',
 			tar: 'cat',
-			cmd: '+',
 			when: 'next'
 		},
 		4: {
@@ -317,7 +321,7 @@ var game = function () {
 			tar: 'cat',
 			cmd: '+'
 		},
-		5: {
+		6: {
 			type: 'size',
 			tar: 'cat',
 			cmd: '-'
@@ -380,7 +384,10 @@ var game = function () {
 				touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
 				addWeapon(touchPosition);
 
-				tmpCmd && tmpCmd();
+				if (tmpCmd) {
+					tmpCmd();
+					tmpCmd = null;
+				}
 			}
 		});
 	}
