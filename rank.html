@@ -1,0 +1,160 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Demo</title>
+    <link rel="stylesheet" href="static/css/reset.css">
+    <style>
+    .clearfix:after {
+    	display: block;
+    	content: " ";
+    	height: 0;
+    	line-height: 0;
+    	font-size: 0;
+    	clear: both;
+    }
+    .clearfix {
+    	zoom: 1;
+    }
+
+	.my-rank,
+	.my-photo,
+	.userinfo,
+	.other-rank,
+	.other-photo {
+		float: left;
+	}
+	
+	.my-rank,
+	.other-rank {
+		width: 80px;
+		height: 50px;
+		text-align: center;	
+		line-height: 50px;
+		font-size: 30px;
+	}
+
+	.other-ranks {
+		width: 100%;
+	}
+	.my-photo,
+	.other-photo {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+	}
+	.other-person {
+		height: 50px;
+	}
+	.userinfo {
+		padding-left: 20px;
+		padding-top: 15px;
+		height: 35px;
+	}
+	.username {
+		font-size: 18px;
+	}
+	.score {
+		font-size: 14px;
+		color: #888;
+	}
+	.title {
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
+		background: #5f7af0;
+	}
+	.title-info {
+		color: #fff;
+		font-weight: bold;
+		text-indent: 15px;
+	}
+	.my,
+	.other-person {
+		padding: 10px 0;
+		border-bottom: 2px solid #ebebeb;
+	}
+    </style>
+</head>
+<body>
+	<div class="rank">
+		<div class="title clearfix">
+			<p class="title-info">排行榜</p>
+		</div>
+		<div class="my clearfix">
+			<p class="my-rank">4</p>
+			<img class="my-photo" src="static/images/rank/my.jpg">
+			<div class="userinfo">
+				<h3 class="username">我</h3>
+				<p class="score">80</p>
+			</div>
+		</div>
+		<div class="other">
+			<ul class="other-ranks">
+				<li class="other-person clearfix">
+					<p class="other-rank">1</p>
+					<img class="other-photo" src="static/images/rank/1.jpg">
+					<div class="userinfo">
+						<h3 class="username">炜炜1</h3>
+						<p class="score">98</p>
+					</div>
+				</li>
+				<li class="other-person clearfix">
+					<p class="other-rank">2</p>
+					<img class="other-photo" src="static/images/rank/2.jpg">
+					<div class="userinfo">
+						<h3 class="username">炜炜2</h3>
+						<p class="score">77</p>
+					</div>
+				</li>
+				<li class="other-person clearfix">
+					<p class="other-rank">3</p>
+					<img class="other-photo" src="static/images/rank/3.jpg">
+					<div class="userinfo">
+						<h3 class="username">炜炜3</h3>
+						<p class="score">20</p>
+					</div>
+				</li>
+				<li class="other-person clearfix">
+					<p class="other-rank">4</p>
+					<img class="other-photo" src="static/images/rank/3.jpg">
+					<div class="userinfo">
+						<h3 class="username">炜炜4</h3>
+						<p class="score">20</p>
+					</div>
+				</li>
+				<li class="other-person clearfix">
+					<p class="other-rank">5</p>
+					<img class="other-photo" src="static/images/rank/3.jpg">
+					<div class="userinfo">
+						<h3 class="username">炜炜5</h3>
+						<p class="score">20</p>
+					</div>
+				</li>
+				<li class="other-person clearfix">
+					<p class="other-rank">6</p>
+					<img class="other-photo" src="static/images/rank/3.jpg">
+					<div class="userinfo">
+						<h3 class="username">炜炜6</h3>
+						<p class="score">20</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<script src="http://s0.qhimg.com/lib/jquery/1102.js"></script>
+    <script>
+    $(function() {
+    	$.ajax({
+    		type: 'POST'
+    		url: 'http://www.60sky.com/api',
+    		data: { username: 'lulin006', score: 40 }
+    	}).done(function(data) {
+    		
+    	});
+    });
+    </script>
+</body>
+</html>
