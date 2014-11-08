@@ -19,6 +19,7 @@
 			display: none;
 		}
 		.scoreBox{
+			position: relative;
 			height: 10%;
 			display: table;
 			margin: 0 auto;
@@ -36,7 +37,7 @@
 			background: url("static/images/score-bg.png") no-repeat;display: block;
 			width: 230px;
 			height: 42px;
-			margin-top: 3px;
+			margin-top: 8px;
 			background-size: cover;
 		}
 		.gameBox{
@@ -123,6 +124,17 @@
 			left: 160px;
 			top: 220px;
 		}
+		.play {
+			position: absolute;
+			top: 10px;
+			right: -38px;
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			background: url(static/images/music.png) 50% no-repeat rgba(0, 0, 0, 0.298039);
+			background-size: 75%;
+			z-index: 9999;
+		}
 		</style>
 	</head>
 	<body  onload="init()">		
@@ -131,6 +143,9 @@
 				<p class="happy-ratio">
 					<span id="score" class="score-info">0</span>
 				</p>
+				<div class="play">
+		    		<audio id="login-audio" src="static/music/run.mp3" autoplay loop></audio>
+		    	</div>
 			</div>
 			<div class="gameBox">
 				<canvas id="canvas"></canvas>
@@ -523,6 +538,36 @@
 				new MoheMbShare(config);
 			})();
 				
+		</script>
+
+		<script>
+			(function() {
+				var $play = $('.play');
+				var interval = null;
+				var rotate = 0;
+				var loginAudio = document.getElementById('login-audio');
+				startPlay();
+				function startPlay() {
+					if(loginAudio.paused === true) {
+						loginAudio.play();
+					}
+					interval = setInterval(function() {
+						$play.css('-webkit-transform', 'rotate('+(rotate+=7)+'deg)');
+					}, 100);
+				}
+				function endPlay() {
+					clearInterval(interval);
+					loginAudio.pause();
+				}
+
+				$play.click(function() {
+					if(loginAudio.paused === false) {
+						endPlay();
+					} else {
+						startPlay();
+					}
+				});
+			})();
 		</script>
 	</body>
 </html>
