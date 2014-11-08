@@ -18,6 +18,11 @@ var game = function () {
 		status : true//true表示正在使用，false表示可以删除
 	};
 	var weaponImgSrc = "static/images/cake.png";
+	var heartImgSrc = "static/images/heart.png";
+	var heart ={
+		score : 0,
+		status: false//true 表示需要new
+	}
 
 	var speed = 10000000;
 	var cat, cakeInfo = {};
@@ -108,6 +113,9 @@ var game = function () {
 		return body;
 	}
 
+	/**
+	 * 添加发射的武器
+	 */
 	function addWeapon(touchPosition){
 		// create Weapon
 		var fixDef = new b2FixtureDef;
@@ -137,6 +145,40 @@ var game = function () {
 				body.GetBody().GetWorldCenter()
 		);
 		weapon.obj = body.GetBody();//设置weapon
+	}
+
+
+	function addHeart(body,score){
+		var fixDef = new b2FixtureDef;
+		fixDef.density = .5;
+		fixDef.friction = 0;
+		fixDef.restitution = 1;
+		fixDef.isSensor = true;
+
+		var bodyDef = new b2BodyDef;
+		bodyDef.type = b2Body.b2_dynamicBody;
+		fixDef.shape = new shapes.b2CircleShape(20);
+		var position = body.GetBody().GetPosition();
+		bodyDef.position.x = position.x;
+		bodyDef.position.y = position.y;//canvas（左上角）和box2d（左下角）的原点不一样
+		var data = { 
+			imgsrc: heartImgSrc,
+			imgsize: 100,
+			bodysize: 20,
+			name: "heart"
+		};
+		bodyDef.userData = data;
+		var heartBody;
+		while(score>0){
+			bodyDef.position.x = position.x+random(30);
+			bodyDef.position.y = position.y+random(10);;
+			heartBody = world.CreateBody(bodyDef).CreateFixture(fixDef);
+			heartBody.GetBody().ApplyImpulse(
+				new b2Vec2(random(6)*speed*5000,random(3)*speed*5000),
+					heartBody.GetBody().GetWorldCenter()
+				);
+			score--;
+		}
 	}
 
 	function getPointOnCanvas(canvas, x, y) {
@@ -175,6 +217,11 @@ var game = function () {
 			world.DestroyBody(weapon.obj);
 			weapon.obj = null;
 			weapon.status = true;
+		}
+		//判断是否要添加红心
+		if(heart.status == true){
+			addHeart(cat, heart.score);
+			heart.status = false;
 		}
 		while (node) {
 			var b = node;
@@ -363,26 +410,26 @@ var game = function () {
 			cmdList[info.type](tarList[info.tar], info.cmd);
 		// } catch(e){}
 	}
-
-
-	function showScore(body , score){
+ 
+	/**
+	 * _showScore 显示击中时的分数
+	 * body 被击中的物体，以此获取位置
+	 * score 需要显示的分数
+	 */
+	function _showScore(body , score){
 		$("#score-box span.add-score").html("+"+score);
 		var position = body.GetBody().GetPosition();
 		var positionY = position.y + "px";
 		var positionX = position.x + "px";
-		console.log(positionY+".."+positionX);
 		$("#score-box").css("left",positionX).css("bottom",positionY);
-		// $("#score-box").animate({opacity:1}, 500,'ease-in');
 		$("#score-box").fadeIn();
 	}
-	window.test = function(){
-		clearTimeout(animateTimer);
-		showScore(catBody, 10);
-		// animateTimer = setTimeout(function(){
-		// 	$("#score-box").animate({opacity:0}, 5000,'ease-out');
-		// },500);
+	function showScore(body , score){
+		clearTimeout(animateTimer);//设置定时器，让分数消失
+		_showScore(body , score);
 		animateTimer = setTimeout(function(){$("#score-box").fadeOut();},1000);
 	}
+
 
 	function stop(){
 
@@ -457,6 +504,9 @@ var game = function () {
 				var y = loverboy.GetBody().GetPosition().y;
 				var as = Math.ceil((y-deltaFloor)/moveHeight*4);
 
+				showScore(cat, as);//显示分数
+				heart.score = as;
+				heart.status = true;
 				score += as;
 				$score.html(score);
 
@@ -465,7 +515,7 @@ var game = function () {
 				//修改表情
 				changeFace("kaixin");
 				clearTimeout(timer);
-				timer = setTimeout(changeFace,0.6*1000);
+				timer = setTimeout(changeFace,1000);
 
 			}else if((aName == "roof" && bName == "weapon")
 					|| (bName == "roof" && aName == "weapon")){//子弹跑出界面之外
