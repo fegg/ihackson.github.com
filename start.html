@@ -11,14 +11,20 @@
 <body>
     <div class="main">
     	<div class="play">
-    		<audio id="login-audio" src="static/music/test.mp3" autoplay loop></audio>
+    		<!-- <audio id="login-audio" src="static/music/test.mp3" autoplay loop></audio> -->
     	</div>
 		<div class="content">
 			<img class="game-name" src="static/images/game-name.png" alt="宅猫喜欢吃甜食">
 			<img class="login-cat" src="static/images/login-cat.png" alt="猫">
 			<img class="start" src="static/images/start.png" alt="开始">
-			<div class="tip" style="display:none;">
-				<p class="login-name">闷骚的小猫咪</p>
+			<div class="tip clearfix" style="display:none;">
+				<p class="tip-content tip-left">
+					<span class="tip-left-info"></span>
+				</p>
+				<p class="tip-content tip-mid">的</p>
+				<p class="tip-content tip-right">
+					<span class="tip-right-info"></span>
+				</p>
 			</div>
 		</div>
 	</div>
@@ -43,36 +49,42 @@
 			return false;
 		});
 
-		var interval = null;
-		var rotate = 0;
-		startPlay();
-		function startPlay() {
-			if(loginAudio.paused === true) {
-				loginAudio.play();
-			}
-			interval = setInterval(function() {
-				$play.css('-webkit-transform', 'rotate('+(rotate+=7)+'deg)');
-			}, 100);
-		}
-		function endPlay() {
-			clearInterval(interval);
-			loginAudio.pause();
-		}
+		// var interval = null;
+		// var rotate = 0;
+		// startPlay();
+		// function startPlay() {
+		// 	if(loginAudio.paused === true) {
+		// 		loginAudio.play();
+		// 	}
+		// 	interval = setInterval(function() {
+		// 		$play.css('-webkit-transform', 'rotate('+(rotate+=7)+'deg)');
+		// 	}, 100);
+		// }
+		// function endPlay() {
+		// 	clearInterval(interval);
+		// 	loginAudio.pause();
+		// }
 
-		$play.click(function() {
-			if(loginAudio.paused === false) {
-				endPlay();
-			} else {
-				startPlay();
-			}
-		});
+		// $play.click(function() {
+		// 	if(loginAudio.paused === false) {
+		// 		endPlay();
+		// 	} else {
+		// 		startPlay();
+		// 	}
+		// });
+
+		var $leftInfo = $('.tip-left-info'),
+			$rightInfo = $('.tip-right-info');
 
 		$.ajax({
 			url: 'http://www.60sky.com/msg',
 			dataType: 'jsonp',
 			data: { category: 'name' }
 		}).done(function(data) {
-			var msg = data.msg_body;
+			if(data) {
+				$leftInfo.text(data.desc);
+				$rightInfo.text(data.name);
+			}
 			
 		});
 	});

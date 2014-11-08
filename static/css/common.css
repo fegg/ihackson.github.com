@@ -18,3 +18,14 @@ a {
     background-color: #bee2d3;
     background-image: url(../images/bg.png);
 }
+.clearfix:after {
+    display: block;
+    content: " ";
+    height: 0;
+    line-height: 0;
+    font-size: 0;
+    clear: both;
+}
+.clearfix {
+    zoom: 1;
+}
