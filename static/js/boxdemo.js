@@ -24,7 +24,7 @@ var game = function () {
 		status: false//true 表示需要new
 	}
 
-	var speed = 10000000;
+	var speed = 1000;
 	var cat, cakeInfo = {};
 
 	var $score = $("#score");
@@ -145,6 +145,8 @@ var game = function () {
 				body.GetBody().GetWorldCenter()
 		);
 		weapon.obj = body.GetBody();//设置weapon
+
+		return body;
 	}
 
 
@@ -313,6 +315,7 @@ var game = function () {
 	* 
 	*/
 	function addFore(body){
+		body = body || cat;
 		body.GetBody().ApplyImpulse(
 			new b2Vec2(speed+(Math.random()-0.5)*speed*3000,speed+(Math.random()-0.5)*speed*3000),
 				body.GetBody().GetWorldCenter()
@@ -323,9 +326,10 @@ var game = function () {
 	//	addFore(cat);
 	// };
 
-	function changeFace(img){
+	function changeFace(img, body){
 		var img = img || "cat";
-		cat.GetBody().GetUserData().imgsrc = "static/images/"+img+".png";
+		var body = body || cat;
+		body.GetBody().GetUserData().imgsrc = "static/images/"+img+".png";
 	}
 
 	//修改图片大小
@@ -345,21 +349,37 @@ var game = function () {
 	function changeSpeed(body, cmd){
 
 	}
+	function changeBad(body, cmd){
 
-	var tmpCmd = null;
+		touchCmd = function(){
+			changeFace('baba', tarList['cake']);
+			console.log('bad');
+		};
+		endCmd = function(){
+			touchCmd = null;
+			endCmd = null;
+			return true;
+		};
+	}
+
+	var touchCmd,endCmd;
 	var cmdList = {
 		size: changeSize,
-		move: addFore
+		move: addFore,
+		bad: changeBad
 	};
 	var tarList = {
 		cat: cat,
-		cake: null
+		cake: 'cake'
 	};
-	var stateList = {
+	var dStateList = {
 		1: {
 			type: 'size',
 			tar: 'cat',
 			cmd: '-'
+		},
+		2: {
+			type: 'bad',
 		},
 		3: {
 			type: 'move',
@@ -372,7 +392,7 @@ var game = function () {
 			cmd: '+'
 		}
 	};
-	stateList = $.extend(stateList, {
+	stateList = $.extend({}, dStateList, {
 		6: {
 			type: 'size',
 			tar: 'cat',
@@ -385,19 +405,26 @@ var game = function () {
 		var info = stateList[score];
 
 		if (!info && skipNum <= 0) {
-			info = stateList[random(4)];
+			info = dStateList[random(4)];
+			console.log(1)
 		}
 
 		if (!info) {
 			skipNum--;
+			console.log(2)
 			return;
 		}
-
+console.log(3)
 		skipNum = 3 + random(3);
 
 		if ((info.when && info.when == 'next') || info.tar == 'cake') {
-			tmpCmd = function(){
+			touchCmd = function(){
 				execCmd(info);
+			};
+			endCmd = function(){
+				touchCmd = null;
+				endCmd = null;
+				return false;
 			};
 		} else {
 			execCmd(info)
@@ -433,6 +460,9 @@ var game = function () {
 
 	function stop(){
 
+		$(".result").removeClass("HIDE").find(".final-score").html($score.html());
+		$score.html(0);
+
 		$('#canvas').off("touchend");//移除添加子弹的touch事件
 		cat.GetBody().SetLinearVelocity(
 			new b2Vec2(0 , 0),cat.GetBody().GetWorldCenter()
@@ -466,12 +496,11 @@ var game = function () {
 			//若超出可点范围，则不发射weapon
 			if(touchPosition.y > moveHeight && weapon.status == true && weapon.obj == null){
 				touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
-				addWeapon(touchPosition);
 
-				if (tmpCmd) {
-					tmpCmd();
-					tmpCmd = null;
-				}
+				tarList['cake'] = addWeapon(touchPosition);
+
+				touchCmd && touchCmd();
+
 			}
 		});
 	}
@@ -497,6 +526,11 @@ var game = function () {
 					|| (bName == "loverboy" && aName == "weapon")) {
 				weapon.status = false;//将子弹设置为需要删除的状态
 
+				if(endCmd && endCmd()){
+					stop();
+					return;
+				}
+
 				var loverboy = (aName == "loverboy")?a:b;
 
 				// 分数
@@ -520,8 +554,9 @@ var game = function () {
 			}else if((aName == "roof" && bName == "weapon")
 					|| (bName == "roof" && aName == "weapon")){//子弹跑出界面之外
 				weapon.status = false;//将子弹设置为需要删除的状态
-				$(".result").removeClass("HIDE").find(".final-score").html($score.html());
-				$score.html(0);
+				if (endCmd && endCmd()) {
+					return;
+				}
 				stop();
 			}
 		}
@@ -541,10 +576,13 @@ var game = function () {
 	debugDraw();
 
 	return {
+		world: world,
 		start: start,
 		stop: stop,
-		cat: cat,
-		world: world
+		addFore: addFore,
+		getCat: function(){
+			return cat;
+		}
 	};
 }();
 
