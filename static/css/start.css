@@ -47,3 +47,20 @@
 	background-size: 75%;
 	z-index: 9999;
 }
+
+@media screen and (min-width: 769px) {
+	.game-name {
+		height: 350px;
+	}
+	.login-cat {
+		margin-left: 20px;
+		height: 300px;
+	}
+	.start {
+		height: 100px;
+	}
+	.play {
+		width: 90px;
+		height: 90px;
+	}
+}
