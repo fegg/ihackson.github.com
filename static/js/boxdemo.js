@@ -211,7 +211,7 @@ var game = function () {
 
 		//绘制虚线
 		dashedLine("canvas",0,moveHeight,canvaswidth,moveHeight);
-		dashedLine("canvas",0,0,canvaswidth,0);
+		dashedLine("canvas",0,2,canvaswidth,2);
 
 		var node = world.GetBodyList();
 		//判断是否要删除发生了碰撞的weapon

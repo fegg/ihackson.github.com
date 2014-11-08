@@ -24,9 +24,20 @@
 			margin: 0 auto;
 		}
 		.score-info{
-			display: table-cell;
-			vertical-align: middle;
-			font: 16px '微软雅黑';
+			font: 20px '微软雅黑';
+			margin-left: 153px;
+			padding-top: 8px;
+			color: white;
+			display: block;
+			width: 60px;
+			text-align: center;
+		}
+		.happy-ratio{
+			background: url("static/images/score-bg.png") no-repeat;display: block;
+			width: 230px;
+			height: 42px;
+			margin-top: 3px;
+			background-size: cover;
 		}
 		.gameBox{
 			width: 100%;
@@ -62,8 +73,9 @@
 	<body  onload="init()">		
 		<div class="page main">
 			<div class="scoreBox">
-				<span class="score-info">你的得分：</span>
-				<span id="score" class="score-info">0</span>
+				<p class="happy-ratio">
+					<span id="score" class="score-info">0</span>
+				</p>
 			</div>
 			<div class="gameBox">
 				<canvas id="canvas">

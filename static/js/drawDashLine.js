@@ -36,7 +36,7 @@ function dashedLine(canvas, defaultX, defaultY, x, y) {
         cxt.lineWidth = "2";
         cxt.lineCap = "round";
         cxt.beginPath();
-        cxt.strokeStyle = 'red';
+        cxt.strokeStyle = '#feff79';
         //开始画虚线。
         cxt.dashedLine(defaultX, defaultY, x, y, dashGapArray);
         cxt.closePath();
