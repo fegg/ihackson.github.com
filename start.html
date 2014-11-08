@@ -32,15 +32,14 @@
 
 		var loginAudio = document.getElementById('login-audio');
 
-		$start.on("webkitTransitionEnd", function() {
-			$tip.fadeIn();
-			setTimeout(function() {
-				window.location.href = 'index.html';
-			}, 3000);
-		});
-
 		$('.start').click(function(e) {
-			$start.addClass('active');
+			$start.addClass('active').on("webkitTransitionEnd", function() {
+				$tip.fadeIn();
+				setTimeout(function() {
+					window.location.href = 'index.html';
+				}, 3000);
+			});
+
 			return false;
 		});
 
@@ -66,6 +65,15 @@
 			} else {
 				startPlay();
 			}
+		});
+
+		$.ajax({
+			url: 'http://www.60sky.com/msg',
+			dataType: 'jsonp',
+			data: { category: 'name' }
+		}).done(function(data) {
+			var msg = data.msg_body;
+			
 		});
 	});
 	</script>
