@@ -465,7 +465,7 @@ var game = function () {
 		$(".result").removeClass("HIDE").find(".final-score").html($score.html());
 		$score.html(0);
 
-		$('#canvas').off("touchend");//移除添加子弹的touch事件
+		$('#canvas').off("click");//移除添加子弹的touch事件
 		cat.GetBody().SetLinearVelocity(
 			new b2Vec2(0 , 0),cat.GetBody().GetWorldCenter()
 		);
@@ -490,9 +490,9 @@ var game = function () {
 		* 添加touch事件，在canvas特定区域生成子弹
 		* 
 		*/
-		$('#canvas').on("touchend",function(e){
+		$('#canvas').on("click",function(e){
 			//获取touch的坐标
-			var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+			var touchPosition = getPointOnCanvas(canvaselem[0], e.pageX, e.pageY);
 			//若超出可点范围，则不发射weapon
 			if(touchPosition.y > moveHeight && weapon.status == true && weapon.obj == null){
 				touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
