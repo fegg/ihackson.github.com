@@ -100,14 +100,29 @@
 		.btn{
 			position: absolute;
 			display: block;
-			width: 200px;
+			width: 130px;
 			height: 50px;
 		}
 		.restart{
 			background: url("static/images/restart-btn.png") no-repeat;
 			background-size: cover;
+			left: 50%;
+			top: 50%;
+			margin-left: -65px;
+		}
+		.share{
+			background: url("static/images/share-btn.png") no-repeat;
+			background-size: cover;
+			width: 90px;
 			left: 20px;
-			top: 50px;
+			top: 220px;
+		}
+		.rank{
+			background: url("static/images/rank-btn.png") no-repeat;
+			background-size: cover;
+			width: 112px;
+			left: 160px;
+			top: 220px;
 		}
 		</style>
 	</head>
@@ -133,11 +148,11 @@
 					<p class="final-score">1234567</p>
 				</div>
 
-				<a href="javascript: init();" class="restart btn">再喂一次</a>
+				<a href="javascript: init();" class="restart btn"></a>
 			
-				<a href="#share" class="js-mh-share share btn">分享</a>
+				<a href="#share" class="js-mh-share share btn"></a>
 			
-				<a href="javascript: init();" class="rank btn">排行榜</a>
+				<a href="javascript: init();" class="rank btn"></a>
 				
 			</div>
 		</div>
