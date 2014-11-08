@@ -5,6 +5,7 @@ a {
     text-decoration: none;
 }
 .main {
+    position: relative;
     padding: 30px;
     display: flex;
     width: 100%;

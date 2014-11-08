@@ -35,3 +35,15 @@
 	margin: 0 auto;
 	font-size: 26px;
 }
+
+.play {
+	position: absolute;
+	top: 30px;
+	right: 30px;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: url(../images/music.png) 50% no-repeat rgba(0, 0, 0, 0.298039);
+	background-size: 75%;
+	z-index: 9999;
+}

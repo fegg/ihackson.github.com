@@ -10,6 +10,9 @@
 </head>
 <body>
     <div class="main">
+    	<div class="play">
+    		<audio id="login-audio" src="static/music/one.mp3" autoplay></audio>
+    	</div>
 		<div class="content">
 			<img class="game-name" src="static/images/game-name.png" alt="宅猫喜欢吃甜食">
 			<img class="login-cat" src="static/images/login-cat.png" alt="猫">
@@ -22,9 +25,13 @@
 	<script src="http://s0.qhimg.com/lib/jquery/1102.js"></script>
 	<script>
 	$(function() {
+
 		var $gameName = $('.game-name'),
 			$start = $('.start'),
-			$tip = $('.tip');
+			$tip = $('.tip'),
+			$play = $('.play');
+
+		var loginAudio = document.getElementById('login-audio');
 
 		$start.on("webkitTransitionEnd", function() {
 			$tip.fadeIn();
@@ -36,6 +43,30 @@
 		$('.start').click(function(e) {
 			$start.addClass('active');
 			return false;
+		});
+
+		var interval = null;
+		var rotate = 0;
+		startPlay();
+		function startPlay() {
+			if(loginAudio.paused === true) {
+				loginAudio.play();
+			}
+			interval = setInterval(function() {
+				$play.css('-webkit-transform', 'rotate('+(rotate+=7)+'deg)');
+			}, 100);
+		}
+		function endPlay() {
+			clearInterval(interval);
+			loginAudio.pause();
+		}
+
+		$play.click(function() {
+			if(loginAudio.paused === false) {
+				endPlay();
+			} else {
+				startPlay();
+			}
 		});
 	});
 	</script>
