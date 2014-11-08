@@ -1,0 +1,22 @@
+.game-name,
+.login-cat,
+.start {
+	max-width: 100%;
+}
+.content {
+	text-align: center;
+}
+.start-link {
+	display: block;
+	margin-top: 30px;
+}
+.game-name {
+	height: 147px;
+}
+.login-cat {
+	height: 170px;
+	margin-top: 20px;
+}
+.start {
+	height: 50px;
+}
