@@ -10,6 +10,8 @@ var game = function (img,imgsize) {
 	var b2DebugDraw =Box2D.Dynamics.b2DebugDraw;
 	var shapes = Box2D.Collision.Shapes;
 
+	var animateTimer;
+
 	if (!img) {
 		img = "static/images/cat.png";
 	}
@@ -297,8 +299,21 @@ var game = function (img,imgsize) {
 	}
 
 
-	function showScore(positionY){
-		
+	function showScore(body , score){
+		$("#score-box span.add-score").html("+"+score);
+		var position = body.GetBody().GetPosition();
+		var positionY = position.y + "px";
+		var positionX = position.x + "px";
+		console.log(positionY+".."+positionX);
+		$("#score-box").css("left",positionX).css("bottom",positionY);
+		$("#score-box").animate({opacity:1}, 5000,'ease-in');
+	}
+	window.test = function(){
+		clearTimeout(animateTimer);
+		showScore(catBody, 10);
+		animateTimer = setTimeout(function(){
+			$("#score-box").animate({opacity:0}, 5000,'ease-out');
+		},500);
 	}
 
 	function stop(){
