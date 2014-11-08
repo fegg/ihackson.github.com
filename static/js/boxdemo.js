@@ -10,7 +10,7 @@ var game = function (img,imgsize) {
 		status : true//true表示正在使用，false表示可以删除
 	};
 	var weaponImgSrc = "static/images/cake.png";
-	var deltaFloor = 80;//底部子弹区域高度
+
 	var speed = 10000000;
 	var catBody;
 	var $score = $("#score");
@@ -18,6 +18,9 @@ var game = function (img,imgsize) {
 	var canvaselem = $("#canvas");
 	var canvaswidth = canvaselem.parent().width();
 	var canvasheight = canvaselem.parent().height();
+	var deltaFloor = 80;//底部子弹区域高度
+	var moveHeight = canvasheight-deltaFloor;
+
 	var context = canvaselem[0].getContext("2d");
 	canvaselem.attr("width", canvaswidth).attr("height", canvasheight);
 
@@ -113,7 +116,7 @@ var game = function (img,imgsize) {
 	function processObjects() {
 
 		//绘制虚线
-		dashedLine("canvas",0,canvasheight-deltaFloor,canvaswidth,canvasheight-deltaFloor);
+		dashedLine("canvas",0,moveHeight,canvaswidth,moveHeight);
 
 		var node = world.GetBodyList();
 		//判断是否要删除发生了碰撞的weapon
@@ -290,8 +293,8 @@ var game = function (img,imgsize) {
 			//获取touch的坐标
 			var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
 			//若超出可点范围，则不发射weapon
-			if(touchPosition.y > canvasheight-deltaFloor && weapon.status == true && weapon.obj == null){
-				touchPosition.y = canvasheight-deltaFloor-20;//画布高度-子弹区域高度-子弹半径
+			if(touchPosition.y > moveHeight && weapon.status == true && weapon.obj == null){
+				touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
 				addWeapon(touchPosition);
 			}
 		});
@@ -316,9 +319,11 @@ var game = function (img,imgsize) {
 				weapon.status = false;//将子弹设置为需要删除的状态
 
 				var score = Number($score.html());
+				var y = contact.GetFixtureA().GetBody().GetPosition().y;
+				var as = Math.ceil((y-deltaFloor)/moveHeight*4);
 
-				score + 1;
-				$score.html(score);//分数加1
+				score += as;
+				$score.html(score);
 
 				//修改表情
 				var loverboy = (aName == "loverboy")?collisionA:collisionB;
@@ -341,7 +346,8 @@ var game = function (img,imgsize) {
 
 	return {
 		start: start,
-		stop: stop
+		stop: stop,
+		cat: catBody
 	};
 }();
 
