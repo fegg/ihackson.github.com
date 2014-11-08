@@ -61,10 +61,338 @@
 			<p> 哈哈，美男子成功逃脱！</p>
 			<p class="final-score">16</p>
 			<p>
-				<a href="###">分享</a>
+				<a href="#share" class="js-mh-share">分享</a>
 				<a href="">再玩一次</a>
 			</p>
 		</div>
+
+
+		
+		<style type="text/css">
+			/*分享弹层*/
+
+			.mohe-pop-share,
+			.mohe-pop-share .mh-mask {
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+			}
+			.mohe-pop-share {
+				z-index: 110;
+				display: none;
+			}
+			.mohe-pop-share .mh-mask {
+				background-color: #000;
+				opacity: .3;
+			}
+			/*分享*/
+			.mohe-pop-share .mh-share-container {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+				text-align: center;
+				background-color: #f0f0f0;
+				color: #666;
+				font-size: 14px;
+			}
+			.mohe-pop-share .mh-share-container .mh-title {
+				margin: 20px 0;
+				font-size: 16px;
+				line-height: 16px;
+			}
+			.mohe-pop-share .mh-share-container .mh-share-cancel {
+				display: block;
+				height: 40px;
+				margin: 20px 5%;
+				border: 1px solid #fff;
+				border-radius: 4px;
+				line-height: 40px;
+				color: #666;
+				background-color: #fff;
+			}
+			.mohe-pop-share .mh-share-wrap {
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: -webkit-flex;
+				display: flex;
+				margin: 0 5%;
+			}
+			.mohe-pop-share .mh-share-wrap li {
+				-webkit-box-flex: 1;
+				-webkit-flex: 1;
+				-ms-flex: 1;
+				flex: 1;
+			}
+			.mohe-pop-share .mh-share-wrap .js-mh-weixin {
+				display: none;
+			}
+			.mohe-pop-share .mh-share-wrap a {
+				overflow: hidden;
+				display: inline-block;
+				width: 50px;
+				height: 54px;
+				background: url(http://p2.qhimg.com/t011fb0e3f0eeef5154.png) 0 0 no-repeat;
+				background-size: 50px auto;
+			}
+			.mohe-pop-share .mh-share-wrap .mh-weixin {
+				background-position: 0 -53px;
+			}
+			.mohe-pop-share .mh-share-wrap .mh-tweibo {
+				background-position: 0 -160px;
+			}
+			.mohe-pop-share .mh-share-wrap .mh-qzone {
+				background-position: 0 -108px;
+			}
+		</style>
+		<div class="mohe-pop-share">
+			<div class="mh-mask"></div>
+			<div class="mh-share-container">
+				<p class="mh-title js-mh-title"></p>
+				<ul class="mh-share-wrap" data-mgd='{"b":"share"}'>
+					<li>
+						<a class="mh-sina" href="#sina" data-share="weibo" data-md='{"p":"sina"}'></a>
+						<p>新浪微博</p>
+					</li>
+					<li style="display: none;">
+						<a class="mh-weixin" href="#weixin" data-share="weixin" data-md='{"p":"weixin"}'></a>
+						<p>微信朋友圈</p>
+					</li>
+					<li>
+						<a class="mh-qzone" href="#qzone" data-share="qzone" data-md='{"p":"qzone"}'></a>
+						<p>QQ空间</p>
+					</li>
+					<li>
+						<a class="mh-tweibo" href="#tweibo" data-share="tweibo" data-md='{"p":"tweibo"}'></a>
+						<p>腾讯微博</p>
+					</li>
+				</ul>
+				<a class="mh-share-cancel" href="#cancel" data-md='{"p":"cancel"}'>取消</a>
+			</div>
+
+			<style type="text/css">
+				/* 微信分享 */
+				.mohe-pop-share .mh-weixin-panel {
+					display: none;
+					position: absolute;
+					z-index: 2;
+					bottom: 225px;
+					left: 50%;
+					margin-left:-148px;
+					width: 258px;
+					padding: 10px 28px 10px 20px;
+					border:1px solid #e3e3e3;
+					background:  #f6f6f6 url(http://p0.qhimg.com/t0127f4c21656be15c4.png) repeat-x 0 0;
+				}
+				.mohe-pop-share .mh-weixin-panel .mh-wx-title {
+					text-align: center;
+					font: bold 18px/36px "Microsoft Yahei";
+					color: #45890a;
+				}
+				.mohe-pop-share .mh-weixin-panel .mh-close {
+					position: absolute;
+					right: 5px;
+					top: 3px;
+					display: block;
+					overflow: hidden;
+					text-indent: -99em;
+					width: 18px;
+					height: 18px;
+					background: url(http://p7.qhimg.com/t01797c3cdd7ca7c3b7.png) no-repeat center;
+				}
+			</style>
+			<div class="mh-weixin-panel">
+				<a class="mh-close" href="#close">关闭</a>
+				<h4 class="mh-wx-title">分享到微信朋友圈</h4>
+				在微信中打开页面后，点击右上角的<img src="http://p4.qhimg.com/t015258c0c90fc008ae.png" alt="" width="24px" height="24px">或<img src="http://p2.qhimg.com/t01b12e4fb1c8946335.png" alt="" width="24px" height="24px">通过<img src="http://p8.qhimg.com/t018b7dec3935b1ac29.png" alt="" width="24px" height="24px">钮分享到自己的朋友圈，或者通过<img src="http://p2.qhimg.com/t01a2a18cc26a55baff.png" alt="" width="24px" height="24px">按钮直接发给自己的朋友
+				<p>如果您用其他手机浏览器打开此页面，请用浏览器默认的分享功能分享到微信/朋友圈。</p>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			window.MoheMbShare = function(config){
+
+				var type = config.type;
+				var root = $(config.selector.root),
+					oPopShare = $(config.selector.pop, root);
+				/*
+				 * 功能：第三方分享
+				 * 说明：
+				 *   在dom节点上，要传的分享参数：
+					 （1）data-title   标题
+					 （2）data-text 内容 
+					 （3）data-url     跳转url 
+					 （4）data-pic     图片 
+				 */
+				function OtherShare(config){
+
+					//默认配置
+					var conf = {
+
+						// 选择器
+						selector: {
+							root: '.mh-share-container',  // 分享的容器
+							share: '.mh-share-wrap',      // 分享链接的容器 - 上面存着分享的内容信息
+							links: 'a',   // 分享的链接
+							wxPanel: '.mh-weixin-panel',  // 微信的容器
+							wxClose: '.mh-close'         // 微信浮层的关闭按钮
+						},
+
+						// 分享
+						share: {
+							title: '',   // 标题
+							text: 'text', // 内容
+							url: 'http://www.so.com/s?q=share&src=share',  // 跳转url，必填（qq空间直接不能分享）
+							pic: ''     // 图片
+						},
+
+						// 分享前修改参数的回调函数
+						paramCallBack: 'shareParam'
+					};
+
+					$.extend(true, conf, config);
+
+					//选择器
+					var root = $(conf.selector.root) || $(document),
+						share = root.find(conf.selector.share),
+						links = share.find(conf.selector.links);
+
+					var wxPanel = root.find(conf.selector.wxPanel),
+						wxClose = wxPanel.find(conf.selector.wxClose);
+
+					var shareObj={
+						reg:/\!\!([a-z]+)\!\!/g,
+						data:{
+							'weibo':'http://service.weibo.com/share/share.php?url=!!url!!&appkey=&title=!!title!!!!text!!&pic=!!pic!!&language=zh_cn&searchPic=false',
+							'tweibo':'http://share.v.t.qq.com/index.php?c=share&a=index&title=!!title!!!!text!!&url=!!url!!&pic=!!pic!!&searchPic=false',
+							'douban':'http://shuo.douban.com/%21service/share?image=!!pic!!&href=!!url!!&name=!!title!!&text=!!text!!&searchPic=false',
+							'qzone':'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=!!url!!&title=!!title!!&pics=!!pic!!&summary=!!text!!&searchPic=false',
+							'renren':'http://widget.renren.com/dialog/share?resourceUrl=!!url!!&srcUrl=!!url!!&title=!!title!!&pic=!!pic!!&description=!!text!!&searchPic=false',
+							'qq':'http://connect.qq.com/widget/shareqq/index.html?url=!!url!!&showcount=0&desc=!!text!!&summary=!!text!!&title=!!title!!&pics=!!pic!!&shareback=qq&searchPic=false'
+						}
+					};
+
+					//点击分享按钮
+					links.click(function(e){
+						e.preventDefault();
+						var me = $(this),
+							type = me.data('share'),
+							url = shareObj.data[type];
+
+						//回调设置分享的参数
+						if(typeof conf.paramCallBack === 'function'){
+							var share = conf.paramCallBack();
+							$.extend(true, conf.share, share);
+						}
+
+						if(type == "weixin"){
+							wxPanel.show();
+						}else{
+
+							if(type=="qzone"){
+								conf.share.url = conf.share.url || "http://www.so.com/s?q=share";
+							}
+
+							var newurl = url.replace(shareObj.reg,function(str,s){
+								switch(s){
+									case 'url':
+										return encodeURIComponent(conf.share.url || '');
+									case 'title':
+										return encodeURIComponent(conf.share.title || '');
+									case 'pic':
+										return encodeURIComponent(conf.share.pic || '');
+									case 'text':
+										return encodeURIComponent(conf.share.text || 'text');
+								}
+							});
+							window.open(newurl);
+						}
+					});
+
+					//关闭微信二维码
+					wxClose.click(function(e){
+						e.preventDefault();
+						wxPanel.hide();
+					});
+				}
+
+				function isWeixin(){
+					var r = /MicroMessenger/i;
+					var ua = navigator.userAgent.toLowerCase();
+
+					return r.test(ua);
+				}
+
+				OtherShare(config);
+
+				function Pop (label, opt) {
+					this.hash = location.hash;
+					this.label = label;
+					this.opt = opt || {};
+				}
+				$.extend(Pop.prototype, {
+					show: function(){
+						var me = this;
+						var label = me.label;
+						me.hash = location.hash;
+						location.hash = '#'+label;
+
+						$(window).on('hashchange.'+label, function(e){
+							var oldURL = e.oldURL;
+							var hash = oldURL.lastIndexOf('#') > -1 ? oldURL.slice(oldURL.lastIndexOf('#')+1) : '';
+							if (hash == label) {
+								me.hide();
+							};
+						});
+
+						me.opt.showCb && me.opt.showCb();
+					},
+					hide: function(){
+						var me = this;
+						var label = me.label;
+						var hash = location.hash.charAt(0) == '#' ? location.hash.substr(1) : location.hash;
+
+						if (hash != label) {
+							$(window).off('hashchange.'+label);
+							me.opt.hideCb && me.opt.hideCb();
+						} else {
+							history.back();
+						}
+					}
+				});
+
+				var pop = new Pop(type+'-share', {
+					showCb: function(){
+						oPopShare.show();
+					},
+					hideCb: function(){
+						oPopShare.hide();
+					}
+				});
+				/*
+				 * 分享
+				 */
+				root.on('click', '.js-mh-share', function(e){
+					e.preventDefault();
+					pop.show();
+				});
+				oPopShare.on('click', '.mh-share-cancel', function(e){
+					e.preventDefault();
+					pop.hide();
+				});
+				oPopShare.on('touchmove', function(e){
+					e.preventDefault();
+					e.stopPropagation();
+					return false;
+				});
+
+				if(isWeixin()){
+					$('.mh-weixin', oPopShare).parent().show();
+				}
+			};
+		</script>
 
 		<script type="text/javascript" src="static/js/zepto_touch_fx.112.js"></script>
 		<script type="text/javascript" src="static/js/zepto.base64.min.js"></script>
@@ -72,6 +400,46 @@
 		<script type="text/javascript" src="static/js/box2d.js"></script>
 		<script type="text/javascript" src="static/js/drawDashLine.js"></script>
 		<script type="text/javascript" src="static/js/boxdemo.js"></script>
+
+		<script>
+			(function(){
+				var root = $('body');
+				/*
+				 * 分享
+				 * @shareParam  function  分享前的回调函数（应用场景：需更新分享文案）
+				 * @config      JSON      配置项
+				 */
+				function shareParam(){
+
+					var share = {
+						text: '必须分享，小伙伴儿们一定会惊呆的~'
+					};
+
+					var info = {
+						
+					};
+					share.text = share.text.replace(/\{\{(\w+)\}\}/g, function(_,w){
+						return info[w] || '';
+					});
+
+					return share;
+				}
+				var config = {
+					type: 'll',
+					selector: {
+						root: 'body',
+						pop: '.mohe-pop-share'
+					},
+					share: {
+						url: 'http://www.so.com/s?src=m-c-music_singles&shareback=m-c-music_singles&q='  //分享的跳转url
+					},
+					paramCallBack: shareParam
+				};
+
+				new MoheMbShare(config);
+			})();
+				
+		</script>
 	</body>
 </html>
 
