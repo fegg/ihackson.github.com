@@ -1,4 +1,4 @@
-var game = function (img,imgsize) {
+var game = function () {
 	var b2Vec2 =Box2D.Common.Math.b2Vec2;  
     var b2AABB =Box2D.Collision.b2AABB;  
     var b2BodyDef =Box2D.Dynamics.b2BodyDef;  
@@ -10,12 +10,10 @@ var game = function (img,imgsize) {
 	var b2DebugDraw =Box2D.Dynamics.b2DebugDraw;
 	var shapes = Box2D.Collision.Shapes;
 
-	if (!img) {
-		img = "static/images/cat.png";
-	}
-	if (!imgsize) {
-		imgsize = 230;
-	}
+
+	var img = "static/images/cat.png";
+	var imgsize = 230;
+
 	var weapon ={
 		obj : null,
 		status : true//true表示正在使用，false表示可以删除
@@ -23,7 +21,8 @@ var game = function (img,imgsize) {
 	var weaponImgSrc = "static/images/cake.png";
 
 	var speed = 10000000;
-	var catBody;
+	var cat, cakeInfo = {};
+
 	var $score = $("#score");
 	// Define the canvas
 	var canvaselem = $("#canvas");
@@ -65,9 +64,6 @@ var game = function (img,imgsize) {
 	world.CreateBody(bodyDef).CreateFixture(fixDef);
 	bodyDef.position.Set(canvaswidth - 2, canvasheight/2);
 	world.CreateBody(bodyDef).CreateFixture(fixDef);
-
-	// 添加移动头像
-	catBody = addImageCircle();
 
 	//setup debug draw
 	// This is used to draw the shapes for debugging. Here the main purpose is to 
@@ -129,6 +125,7 @@ var game = function (img,imgsize) {
 
 		//绘制虚线
 		dashedLine("canvas",0,moveHeight,canvaswidth,moveHeight);
+		dashedLine("canvas",0,0,canvaswidth,0);
 
 		var node = world.GetBodyList();
 		//判断是否要删除发生了碰撞的weapon
@@ -273,27 +270,72 @@ var game = function (img,imgsize) {
 	}
 
 	// window.test = function(){
-	//	addFore(catBody);
+	//	addFore(cat);
 	// };
 
 	function changeFace(img){
 		var img = img || "cat";
-		catBody.GetBody().GetUserData().imgsrc = "static/images/"+img+".png";
+		cat.GetBody().GetUserData().imgsrc = "static/images/"+img+".png";
 	}
 
 	//修改图片大小
-	function expandSize(body, type){
+	function changeSize(body, cmd){
 		var data = body.GetBody().GetUserData();
 		var s = body.GetShape();
-		if (type == '+') {
+		if (cmd == '+') {
 			data.bodysize *= 2;
-		} else if (type == '-') {
+		} else if (cmd == '-') {
 			data.bodysize /= 2;
 		} else {
 			data.bodysize = 30;
 		}
 		s.SetRadius(data.bodysize);
 
+	}
+	function changeSpeed(body, cmd){
+
+	}
+
+	var tmpCmd = null;
+	var cmdList = {
+		size: changeSize,
+		move: addFore
+	};
+	var tarList = {
+		cat: cat,
+		cake: cakeInfo
+	};
+	var stateList = {
+		3: {
+			type: 'move',
+			tar: 'cat',
+			cmd: '+',
+			when: 'next'
+		},
+		4: {
+			type: 'size',
+			tar: 'cat',
+			cmd: '+'
+		},
+		5: {
+			type: 'size',
+			tar: 'cat',
+			cmd: '-'
+		}
+	};
+	function checkMode(score){
+		var info = stateList[score];
+		if (!info) {return}
+
+		// try {
+			if (info.when && info.when == 'next') {
+				tmpCmd = function(){
+					cmdList[info.type](tarList[info.tar], info.cmd);
+				};
+			} else {
+				cmdList[info.type](tarList[info.tar], info.cmd);
+			}
+		// } catch(e){}
 	}
 
 
@@ -304,8 +346,8 @@ var game = function (img,imgsize) {
 	function stop(){
 
 		$('#canvas').off("touchend");//移除添加子弹的touch事件
-		catBody.GetBody().SetLinearVelocity(
-			new b2Vec2(0 , 0),catBody.GetBody().GetWorldCenter()
+		cat.GetBody().SetLinearVelocity(
+			new b2Vec2(0 , 0),cat.GetBody().GetWorldCenter()
 		);
 		changeFace("nanguo");
 
@@ -315,9 +357,16 @@ var game = function (img,imgsize) {
 	
 	function start(){
 
+		if (cat) {
+			world.DestroyBody(cat.GetBody());
+		}
+
+		// 添加移动头像
+		cat = tarList['cat'] = addImageCircle();
+
 		changeFace("cat");
 
-		addFore(catBody);
+		addFore(cat);
 
 		/**
 		* 添加touch事件，在canvas特定区域生成子弹
@@ -330,6 +379,8 @@ var game = function (img,imgsize) {
 			if(touchPosition.y > moveHeight && weapon.status == true && weapon.obj == null){
 				touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
 				addWeapon(touchPosition);
+
+				tmpCmd && tmpCmd();
 			}
 		});
 	}
@@ -398,7 +449,7 @@ var game = function (img,imgsize) {
 	return {
 		start: start,
 		stop: stop,
-		cat: catBody,
+		cat: cat,
 		world: world
 	};
 }();
