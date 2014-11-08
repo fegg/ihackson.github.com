@@ -463,7 +463,6 @@ var game = function () {
 	function stop(){
 
 		$(".result").removeClass("HIDE").find(".final-score").html($score.html());
-		$score.html(0);
 
 		$('#canvas').off("click");//移除添加子弹的touch事件
 		cat.GetBody().SetLinearVelocity(
@@ -474,6 +473,8 @@ var game = function () {
 	}
 	
 	function start(){
+		
+		$score.html(0);
 
 		if (cat) {
 			world.DestroyBody(cat.GetBody());
