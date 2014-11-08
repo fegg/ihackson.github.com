@@ -11,7 +11,7 @@
 <body>
     <div class="main">
     	<div class="play">
-    		<audio id="login-audio" src="static/music/one.mp3" autoplay></audio>
+    		<audio id="login-audio" src="static/music/test.mp3" autoplay loop></audio>
     	</div>
 		<div class="content">
 			<img class="game-name" src="static/images/game-name.png" alt="宅猫喜欢吃甜食">
@@ -25,7 +25,6 @@
 	<script src="http://s0.qhimg.com/lib/jquery/1102.js"></script>
 	<script>
 	$(function() {
-
 		var $gameName = $('.game-name'),
 			$start = $('.start'),
 			$tip = $('.tip'),
@@ -36,7 +35,7 @@
 		$start.on("webkitTransitionEnd", function() {
 			$tip.fadeIn();
 			setTimeout(function() {
-				// window.location.href = 'index.html';
+				window.location.href = 'index.html';
 			}, 3000);
 		});
 

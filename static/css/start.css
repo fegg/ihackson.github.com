@@ -31,7 +31,6 @@
 	color: #fff;
 }
 .tip .login-name {
-	width: 200px;
 	margin: 0 auto;
 	font-size: 26px;
 }
@@ -46,4 +45,24 @@
 	background: url(../images/music.png) 50% no-repeat rgba(0, 0, 0, 0.298039);
 	background-size: 75%;
 	z-index: 9999;
+}
+
+@media screen and (min-width: 769px) {
+	.game-name {
+		height: 350px;
+	}
+	.login-cat {
+		margin-left: 20px;
+		height: 300px;
+	}
+	.start {
+		height: 100px;
+	}
+	.play {
+		width: 50px;
+		height: 50px;
+	}
+	.tip .login-name {
+		font-size: 40px;
+	}
 }
