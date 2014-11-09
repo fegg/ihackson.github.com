@@ -599,6 +599,10 @@ var game = function () {
 				score += as;
 				$score.html(score);
 
+				var miao = new Audio();
+				miao.src = 'static/music/miao.mp3';
+				miao.play();
+
 				checkMode(score);
 
 				//修改表情
