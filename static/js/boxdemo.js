@@ -9,6 +9,8 @@ var game = function () {
 	var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;  
 	var b2DebugDraw =Box2D.Dynamics.b2DebugDraw;
 	var shapes = Box2D.Collision.Shapes;
+	var gameOverType = "missed";//用户死亡状态，默认为正常情况下的missed
+	var faceType = 0;
 
 	var animateTimer;
 	var img = "static/images/cat.png";
@@ -23,6 +25,11 @@ var game = function () {
 	var heart ={
 		score : 0,
 		status: false//true 表示需要new
+	}
+
+	var eventType = "click";//判断userAgent
+	if($.os.phone || $.os.tablet){
+		eventType = "touchend";
 	}
 
 	var speed = 1000;
@@ -315,6 +322,7 @@ var game = function () {
 	* 
 	*/
 	function addFore(body){
+		gameOverType = "runaway";
 		body = body || cat;
 		body.GetBody().ApplyImpulse(
 			new b2Vec2(speed+(Math.random()-0.5)*speed*3000,speed+(Math.random()-0.5)*speed*3000),
@@ -333,10 +341,22 @@ var game = function () {
 		var data = body.GetBody().GetUserData();
 		var s = body.GetShape();
 		if (cmd == '+') {
+			faceType++;
+			gameOverType = "big";
+			if(faceType==0){
+				gameOverType = "missed";
+			}
 			data.bodysize *= 2;
 		} else if (cmd == '-') {
+			faceType--;
+			gameOverType = "small";
+			if(faceType==0){
+				gameOverType = "missed";
+			}
 			data.bodysize /= 2;
 		} else {
+			faceType = 0;
+			gameOverType = "missed";
 			data.bodysize = 30;
 		}
 		s.SetRadius(data.bodysize);
@@ -347,6 +367,7 @@ var game = function () {
 	}
 	function changeBad(body, cmd){
 
+		gameOverType = "shit";
 		touchCmd = function(){
 			changeFace('baba', tarList['cake']);
 			console.log('bad');
@@ -395,6 +416,14 @@ var game = function () {
 			cmd: '-'
 		}
 	});
+
+	var gameOverText ={
+		"missed":["呵呵，被口水呛死了！","没吃到蛋糕不幸福~","蛋糕溜走了，嘤嘤嘤嘤~"],
+		"shit":["恶心死了！","宅猫已中毒，不治身亡~"],
+		"runaway":["呵呵，就是这么逗比！","不好意思，看到老鼠了~","不好意思，突然尿急~"],
+		"big":["呵呵，这么大都打不中，你个傻逼！","你是故意不给我吃的吧~","咧大都打不中！"],
+		"small":["呵呵，被噎死了！","眼睁睁的看着蛋糕溜走了~","瘦一点你就不给我吃了，呜呜~"]
+	}
 
 	var skipNum = 4;
 	function checkMode(score){
@@ -462,15 +491,17 @@ var game = function () {
 
 
 	function stop(){
+		var gameOverInfo = gameOverText[gameOverType];
+		gameOverInfo = gameOverInfo[random(gameOverInfo.length)-1];
 		$(".result").removeClass("HIDE")
 			.find(".final-score")
-			.html($score.html())
+			.html(gameOverInfo)
 			.end()
 			.find('.random-message')
 			.text(localStorage.getItem('gamerDesc')+"的"+localStorage.getItem('gamerName'));
 
 		rank("submit");//提交成绩
-		$('#canvas').off("click");//移除添加子弹的touch事件
+		$('#canvas').off(eventType);//移除添加子弹的touch事件
 		cat.GetBody().SetLinearVelocity(
 			new b2Vec2(0 , 0),cat.GetBody().GetWorldCenter()
 		);
@@ -492,13 +523,15 @@ var game = function () {
 
 		addFore(cat);
 
+		gameOverType = "missed";//用户死亡状态，默认为正常情况下的missed
+
 		/**
 		* 添加touch事件，在canvas特定区域生成子弹
 		* 
 		*/
-		$('#canvas').on("click",function(e){
+		$('#canvas').on(eventType,function(e){
 			//获取touch的坐标
-			var touchPosition = getPointOnCanvas(canvaselem[0], e.pageX, e.pageY);
+			var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
 			//若超出可点范围，则不发射weapon
 			if(touchPosition.y > moveHeight && weapon.status == true && weapon.obj == null){
 				touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
@@ -508,6 +541,14 @@ var game = function () {
 				touchCmd && touchCmd();
 
 			}
+		});
+
+		$(".guide-box").on(eventType,function(e){
+			$(this).remove();
+			//获取touch的坐标
+			var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+			touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
+			addWeapon(touchPosition);
 		});
 	}
 
