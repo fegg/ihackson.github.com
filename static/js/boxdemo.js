@@ -9,8 +9,9 @@ var game = function () {
 	var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;  
 	var b2DebugDraw =Box2D.Dynamics.b2DebugDraw;
 	var shapes = Box2D.Collision.Shapes;
-	var gameOverType = "missed";//用户死亡状态，默认为正常情况下的missed
 	var faceType = 0;
+
+	var gameOverType = "missed";//默认为missed
 
 	var animateTimer;
 	var img = "static/images/cat.png";
@@ -322,7 +323,6 @@ var game = function () {
 	* 
 	*/
 	function addFore(body){
-		gameOverType = "runaway";
 		body = body || cat;
 		body.GetBody().ApplyImpulse(
 			new b2Vec2(speed+(Math.random()-0.5)*speed*3000,speed+(Math.random()-0.5)*speed*3000),
@@ -342,21 +342,12 @@ var game = function () {
 		var s = body.GetShape();
 		if (cmd == '+') {
 			faceType++;
-			gameOverType = "big";
-			if(faceType==0){
-				gameOverType = "missed";
-			}
 			data.bodysize *= 2;
 		} else if (cmd == '-') {
 			faceType--;
-			gameOverType = "small";
-			if(faceType==0){
-				gameOverType = "missed";
-			}
 			data.bodysize /= 2;
 		} else {
 			faceType = 0;
-			gameOverType = "missed";
 			data.bodysize = 30;
 		}
 		s.SetRadius(data.bodysize);
@@ -367,10 +358,8 @@ var game = function () {
 	}
 	function changeBad(body, cmd){
 
-		gameOverType = "shit";
 		touchCmd = function(){
 			changeFace('baba', tarList['cake']);
-			console.log('bad');
 		};
 		endCmd = function(){
 			touchCmd = null;
@@ -419,15 +408,17 @@ var game = function () {
 
 	var gameOverText ={
 		"missed":["呵呵，被口水呛死了！","没吃到蛋糕不幸福~","蛋糕溜走了，嘤嘤嘤嘤~"],
-		"shit":["恶心死了！","宅猫已中毒，不治身亡~"],
-		"runaway":["呵呵，就是这么逗比！","不好意思，看到老鼠了~","不好意思，突然尿急~"],
-		"big":["呵呵，这么大都打不中，你个傻逼！","你是故意不给我吃的吧~","咧大都打不中！"],
-		"small":["呵呵，卢林是逗比！","眼睁睁的看着蛋糕溜走了~","瘦一点你就不给吃，呜呜~"]
-	}
+		"bad":["恶心死了！","宅猫已中毒，不治身亡~","啊啊啊，吃到翔了~","oh，shit！"],
+		"move":["呵呵，就是这么逗比！","不好意思，看到老鼠了~","不好意思，突然尿急~"],
+		"size+":["呵呵，这么大都打不中，你个傻逼！","你是故意不给我吃的吧~","咧大都打不中！"],
+		"size-":["呵呵，卢林是逗比！","眼睁睁的看着蛋糕溜走了~","瘦一点你就不给吃，呜呜~"]
+	};
+
 
 	var skipNum = 4;
 	function checkMode(score){
 		var info = stateList[score];
+		gameOverType = 'missed';
 
 		if (!info && skipNum <= 0) {
 			if (cat.GetShape().GetRadius() > circleSize) {
@@ -449,9 +440,12 @@ var game = function () {
 
 		skipNum = 3 + random(3);
 
+		gameOverType = info.type + (info.cmd || '');
+
 		if ((info.when && info.when == 'next') || info.tar == 'cake') {
 			touchCmd = function(){
 				execCmd(info);
+
 			};
 			endCmd = function(){
 				touchCmd = null;
@@ -522,8 +516,6 @@ var game = function () {
 		changeFace("cat");
 
 		addFore(cat);
-
-		gameOverType = "missed";//用户死亡状态，默认为正常情况下的missed
 
 		/**
 		* 添加touch事件，在canvas特定区域生成子弹
@@ -609,10 +601,6 @@ var game = function () {
 				changeFace("kaixin");
 				clearTimeout(timer);
 				timer = setTimeout(changeFace,1000);
-
-				if(gameOverType == "shit" || gameOverType == "runaway"){
-					gameOverType = "missed";
-				}
 
 			}else if((aName == "roof" && bName == "weapon")
 					|| (bName == "roof" && aName == "weapon")){//子弹跑出界面之外
