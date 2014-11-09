@@ -552,8 +552,11 @@
 				 */
 				function shareParam(){
 
+					var user = localStorage.gamerDesc +"的"+ localStorage.gamerName;
+					var score = $("#score").html();
+					var text = $(".final-score").html();
 					var share = {
-						text: '必须分享，小伙伴儿们一定会惊呆的~'
+						text: user+"在宅猫爱吃甜食得了"+score+"分，"+text+"小伙伴们快来一决高下~"
 					};
 
 					var info = {
@@ -572,7 +575,7 @@
 						pop: '.mohe-pop-share'
 					},
 					share: {
-						url: 'http://www.so.com/s?src=m-c-music_singles&shareback=m-c-music_singles&q='  //分享的跳转url
+						url: 'http://www.60sky.com/hackathon/'  //分享的跳转url
 					},
 					paramCallBack: shareParam
 				};

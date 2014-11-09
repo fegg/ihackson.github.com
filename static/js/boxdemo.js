@@ -531,7 +531,11 @@ var game = function () {
 		*/
 		$('#canvas').on(eventType,function(e){
 			//获取touch的坐标
-			var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+			if(eventType == "click"){
+				var touchPosition = getPointOnCanvas(canvaselem[0], e.pageX, e.pageY);
+			}else{
+				var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+			}
 			//若超出可点范围，则不发射weapon
 			if(touchPosition.y > moveHeight && weapon.status == true && weapon.obj == null){
 				touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
@@ -546,7 +550,11 @@ var game = function () {
 		$(".guide-box").on(eventType,function(e){
 			$(this).remove();
 			//获取touch的坐标
-			var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+			if(eventType == "click"){
+				var touchPosition = getPointOnCanvas(canvaselem[0], e.pageX, e.pageY);
+			}else{
+				var touchPosition = getPointOnCanvas(canvaselem[0], e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+			}
 			touchPosition.y = moveHeight-20;//画布高度-子弹区域高度-子弹半径
 			addWeapon(touchPosition);
 		});
