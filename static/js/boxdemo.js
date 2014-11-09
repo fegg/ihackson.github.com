@@ -598,6 +598,10 @@ var game = function () {
 				clearTimeout(timer);
 				timer = setTimeout(changeFace,1000);
 
+				if(gameOverType == "shit" || gameOverType == "runaway"){
+					gameOverType = "missed";
+				}
+
 			}else if((aName == "roof" && bName == "weapon")
 					|| (bName == "roof" && aName == "weapon")){//子弹跑出界面之外
 				weapon.status = false;//将子弹设置为需要删除的状态
