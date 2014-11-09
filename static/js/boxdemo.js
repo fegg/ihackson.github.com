@@ -399,11 +399,10 @@ var game = function () {
 		}
 	};
 	stateList = $.extend({}, dStateList, {
-		6: {
-			type: 'size',
-			tar: 'cat',
-			cmd: '-'
-		}
+		6:dStateList[1],
+		12:dStateList[3],
+		17:dStateList[1],
+		21:dStateList[2]
 	});
 
 	var gameOverText ={
