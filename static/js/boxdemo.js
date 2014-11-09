@@ -486,13 +486,14 @@ var game = function () {
 
 	function stop(){
 		var gameOverInfo = gameOverText[gameOverType];
+		var userName = (localStorage.getItem('gamerDesc') || "未知")+"的"+(localStorage.getItem('gamerName') || "喵喵")
 		gameOverInfo = gameOverInfo[random(gameOverInfo.length)-1];
 		$(".result").removeClass("HIDE")
 			.find(".final-score")
 			.html(gameOverInfo)
 			.end()
 			.find('.random-message')
-			.text(localStorage.getItem('gamerDesc')+"的"+localStorage.getItem('gamerName'));
+			.text(userName);
 
 		rank("submit");//提交成绩
 		$('#canvas').off(eventType);//移除添加子弹的touch事件
@@ -517,6 +518,7 @@ var game = function () {
 
 		addFore(cat);
 
+		gameOverType = "missed";
 		/**
 		* 添加touch事件，在canvas特定区域生成子弹
 		* 

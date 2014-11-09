@@ -387,7 +387,7 @@
 						share: {
 							title: '',   // 标题
 							text: 'text', // 内容
-							url: 'http://www.so.com/s?q=share&src=share',  // 跳转url，必填（qq空间直接不能分享）
+							url: 'http://www.60sky.com/',  // 跳转url，必填（qq空间直接不能分享）
 							pic: ''     // 图片
 						},
 
@@ -435,7 +435,7 @@
 						}else{
 
 							if(type=="qzone"){
-								conf.share.url = conf.share.url || "http://www.so.com/s?q=share";
+								conf.share.url = conf.share.url || "http://www.60sky.com/";
 							}
 
 							var newurl = url.replace(shareObj.reg,function(str,s){
@@ -575,7 +575,7 @@
 						pop: '.mohe-pop-share'
 					},
 					share: {
-						url: 'http://www.60sky.com/hackathon/'  //分享的跳转url
+						url: 'http://www.60sky.com/'  //分享的跳转url
 					},
 					paramCallBack: shareParam
 				};
