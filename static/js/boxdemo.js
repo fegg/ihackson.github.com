@@ -126,7 +126,7 @@ var game = function () {
 		touchPosition = touchPosition || {x:canvaswidth/2,y:canvasheight};
 		// create Weapon
 		var fixDef = new b2FixtureDef;
-		fixDef.density = .5;
+		fixDef.density = 1;
 		fixDef.friction = 0;
 		fixDef.restitution = 1;
 		// fixDef.isSensor = true;
@@ -408,7 +408,7 @@ var game = function () {
 
 	var gameOverText ={
 		"missed":["呵呵，被口水呛死了！","没吃到蛋糕不幸福~","蛋糕溜走了，嘤嘤嘤嘤~"],
-		"bad":["恶心死了！","宅猫已中毒，不治身亡~","啊啊啊，吃到翔了~","oh，shit！"],
+		"bad":["恶心死了！","吃到翔，已身亡~","啊啊啊，吃到翔了~","oh，shit！"],
 		"move":["呵呵，就是这么逗比！","不好意思，看到老鼠了~","不好意思，突然尿急~"],
 		"size+":["呵呵，这么大都打不中，你个傻逼！","你是故意不给我吃的吧~","咧大都打不中！"],
 		"size-":["呵呵，卢林是逗比！","眼睁睁的看着蛋糕溜走了~","瘦一点你就不给吃，呜呜~"]
