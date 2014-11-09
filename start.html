@@ -24,13 +24,13 @@
 			<img class="login-cat" src="static/images/login-cat.png" alt="猫">
 			<img class="start" src="static/images/start.png" alt="开始">
 			<div class="tip clearfix" style="display:none;">
-				<p class="tip-content tip-left">
-					<span class="tip-left-info"></span>
-				</p>
+				<div class="tip-content tip-left">
+					<p class="tip-content-inner tip-left-content-inner"></p>
+				</div>
 				<p class="tip-content tip-mid">的</p>
-				<p class="tip-content tip-right">
-					<span class="tip-right-info"></span>
-				</p>
+				<div class="tip-content tip-right">
+					<p class="tip-content-inner tip-right-content-inner"></p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -42,14 +42,19 @@
 			$tip = $('.tip'),
 			$play = $('.play');
 
+		var $tipLeft = $('.tip-left'),
+			$tipRight = $('.tip-right');
+
 		var loginAudio = document.getElementById('login-audio');
 
 		$('.start').click(function(e) {
 			$start.addClass('active').on("webkitTransitionEnd", function() {
-				$tip.fadeIn();
-				setTimeout(function() {
-					window.location.href = 'index.html';
-				}, 3000);
+				$tip.fadeIn(function() {
+					$('.tip-content-inner').css('top', '-90px');
+					setTimeout(function() {
+						window.location.href = 'index.html';
+					}, 2000);
+				});
 			});
 
 			return false;
@@ -79,20 +84,29 @@
 			}
 		});
 
-		var $leftInfo = $('.tip-left-info'),
-			$rightInfo = $('.tip-right-info');
+		var $leftInfo = $('.tip-left-content-inner'),
+			$rightInfo = $('.tip-right-content-inner');
 
 		$.ajax({
 			url: 'http://www.60sky.com/msg',
 			dataType: 'jsonp',
-			data: { category: 'name' }
-		}).done(function(data) {
+			data: { category: 'name_list' }
+		}).done(function(jsondata) {
+			var data = jsondata.name_list;
 			if(data) {
-				$leftInfo.text(data.desc);
-				$rightInfo.text(data.name);
+				var leftInfo = null, rightInfo = null;
+				for(var i = 0; i < data.length; i++) {
+					var tmp = data[i];
+					leftInfo = $('<span class="tip-left-info"></span>').text(tmp.desc);
+					rightInfo = $('<span class="tip-right-info"></span>').text(tmp.name);
+					$leftInfo.append(leftInfo);
+					$rightInfo.append(rightInfo);
+				}
+
+				var n = data.length - 1;
 				if(window.localStorage) {
-					localStorage.setItem('gamerName', data.name);
-					localStorage.setItem('gamerDesc', data.desc);
+					localStorage.setItem('gamerName', data[n].name);
+					localStorage.setItem('gamerDesc', data[n].desc);
 				} else {
 
 				}
