@@ -87,6 +87,15 @@
 }
 @media screen and (min-width: 769px) {
 	.page .rank-main {
-		padding: 0 50px;
+		width: 600px;
+		left: 50%; 
+		margin-left: -300px; 
+	}
+	.page .active {
+		left: 50%;
+		margin-left: -300px;
+	}
+	.item-score {
+		margin-right: 50px;
 	}
 }

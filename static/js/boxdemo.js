@@ -33,7 +33,7 @@ var game = function () {
 	var canvaselem = $("#canvas");
 	var canvaswidth = canvaselem.parent().width();
 	var canvasheight = canvaselem.parent().height();
-	var deltaFloor = 80;//底部子弹区域高度
+	var deltaFloor = 100;//底部子弹区域高度
 	var moveHeight = canvasheight-deltaFloor;
 
 	var context = canvaselem[0].getContext("2d");
@@ -212,6 +212,7 @@ var game = function () {
 		dashedLine("canvas",0,moveHeight,canvaswidth,moveHeight);
 		dashedLine("canvas",0,2,canvaswidth,2);
 
+		$(".guide-box").css("height",deltaFloor);//设置新手引导的高度
 		var node = world.GetBodyList();
 		//判断是否要删除发生了碰撞的weapon
 		if(weapon.status == false){
@@ -466,14 +467,14 @@ var game = function () {
 			.html($score.html())
 			.end()
 			.find('.random-message')
-			.text(localStorage.getItem('gamerName'));
+			.text(localStorage.getItem('gamerDesc')+"的"+localStorage.getItem('gamerName'));
 
+		rank("submit");//提交成绩
 		$('#canvas').off("click");//移除添加子弹的touch事件
 		cat.GetBody().SetLinearVelocity(
 			new b2Vec2(0 , 0),cat.GetBody().GetWorldCenter()
 		);
 		changeFace("nanguo");
-
 	}
 	
 	function start(){
