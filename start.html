@@ -50,7 +50,7 @@
 		$('.start').click(function(e) {
 			$start.addClass('active').on("webkitTransitionEnd", function() {
 				$tip.fadeIn(function() {
-					$('.tip-content-inner').css('top', '-90px');
+					$('.tip-content-inner').css('top', '-396px');
 					setTimeout(function() {
 						window.location.href = 'index.html';
 					}, 2000);
@@ -93,6 +93,7 @@
 			data: { category: 'name_list' }
 		}).done(function(jsondata) {
 			var data = jsondata.name_list;
+			console.log(data)
 			if(data) {
 				var leftInfo = null, rightInfo = null;
 				for(var i = 0; i < data.length; i++) {
