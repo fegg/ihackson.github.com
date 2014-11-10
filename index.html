@@ -385,14 +385,14 @@
 
 						// 分享
 						share: {
-							title: '',   // 标题
+							title: '宅猫爱吃甜食',   // 标题
 							text: 'text', // 内容
 							url: 'http://www.60sky.com/',  // 跳转url，必填（qq空间直接不能分享）
-							pic: ''     // 图片
+							pic: 'static/images/login-cat.png'     // 图片
 						},
 
 						// 分享前修改参数的回调函数
-						paramCallBack: 'shareParam'
+						paramCallBack: config.paramCallBack
 					};
 
 					$.extend(true, conf, config);
@@ -684,6 +684,7 @@
 				<span class="item-score">{score}</span>
 			</li>
 		</script>
+		<script id="shanku_api" src="http://h.qhimg.com/shanku/js/shanku-api.js?toolbar=hide"></script>
 	</body>
 </html>
 
