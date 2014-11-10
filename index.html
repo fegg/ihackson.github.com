@@ -382,17 +382,16 @@
 							wxPanel: '.mh-weixin-panel',  // 微信的容器
 							wxClose: '.mh-close'         // 微信浮层的关闭按钮
 						},
-
 						// 分享
 						share: {
 							title: '宅猫爱吃甜食',   // 标题
-							text: 'text', // 内容
+							text: config.share.text, // 内容
 							url: 'http://www.60sky.com/',  // 跳转url，必填（qq空间直接不能分享）
 							pic: 'static/images/login-cat.png'     // 图片
 						},
 
 						// 分享前修改参数的回调函数
-						paramCallBack: config.paramCallBack
+						paramCallBack: 'shareParam'
 					};
 
 					$.extend(true, conf, config);
@@ -555,19 +554,19 @@
 					var user = localStorage.gamerDesc +"的"+ localStorage.gamerName;
 					var score = $("#score").html();
 					var text = $(".final-score").html();
+
 					var share = {
 						text: user+"在宅猫爱吃甜食得了"+score+"分，"+text+"小伙伴们快来一决高下~"
 					};
 
-					var info = {
-						
-					};
 					share.text = share.text.replace(/\{\{(\w+)\}\}/g, function(_,w){
 						return info[w] || '';
 					});
 
 					return share;
 				}
+
+				var shareContent = shareParam();
 				var config = {
 					type: 'll',
 					selector: {
@@ -575,6 +574,7 @@
 						pop: '.mohe-pop-share'
 					},
 					share: {
+						text: shareContent.share.text,
 						url: 'http://www.60sky.com/'  //分享的跳转url
 					},
 					paramCallBack: shareParam
