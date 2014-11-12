@@ -395,6 +395,8 @@
 
 					$.extend(true, conf, config);
 
+					console.log(conf)
+
 					//选择器
 					var root = $(conf.selector.root) || $(document),
 						share = root.find(conf.selector.share),
@@ -529,9 +531,9 @@
 					return false;
 				});
 
-				if(isWeixin()){
+				// if(isWeixin()){
 					$('.mh-weixin', oPopShare).parent().show();
-				}
+				// }
 			};
 		</script>
 
@@ -550,11 +552,12 @@
 				 */
 				function shareParam(){
 
-					var user = localStorage.gamerDesc +"的"+ localStorage.gamerName;
+					var user = (localStorage.gamerDesc || '萌萌') +"的"+ (localStorage.gamerName || '你');
 					var score = $("#score").html();
 					var text = $(".final-score").html();
 
 					var share = {
+						title: '宅猫爱吃甜食',
 						text: user+"在宅猫爱吃甜食得了"+score+"分，"+text+"小伙伴们快来一决高下~",
 						url: 'http://www.60sky.com',
 						pic: 'static/images/login-cat.png'
