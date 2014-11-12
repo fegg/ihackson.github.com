@@ -383,10 +383,10 @@
 						},
 						// 分享
 						share: {
-							title: '宅猫爱吃甜食',   // 标题
-							text: config.share.text, // 内容
-							url: 'http://www.60sky.com/',  // 跳转url，必填（qq空间直接不能分享）
-							pic: 'static/images/login-cat.png'     // 图片
+							title: '',   // 标题
+							text: '', // 内容
+							url: 'http://www.60sky.com',  // 跳转url，必填（qq空间直接不能分享）
+							pic: ''     // 图片
 						},
 
 						// 分享前修改参数的回调函数
@@ -554,29 +554,28 @@
 					var score = $("#score").html();
 					var text = $(".final-score").html();
 
-					var share = {
-						text: user+"在宅猫爱吃甜食得了"+score+"分，"+text+"小伙伴们快来一决高下~"
-					};
-
+					var share.text = user+"在宅猫爱吃甜食得了"+score+"分，"+text+"小伙伴们快来一决高下~";
 					share.text = share.text.replace(/\{\{(\w+)\}\}/g, function(_,w){
 						return info[w] || '';
 					});
+					share.url = 'http://www.60sky.com';
+					share.pic = 'static/images/login-cat.png';
+					
 
 					return share;
 				}
 
 				var shareContent = shareParam();
+
+				alert(shareContent.text);
+
 				var config = {
 					type: 'll',
 					selector: {
 						root: 'body',
 						pop: '.mohe-pop-share'
 					},
-					share: {
-						text: shareContent.text,
-						url: 'http://www.60sky.com/'  //分享的跳转url
-					},
-					paramCallBack: shareParam
+					share: shareContent
 				};
 
 				new MoheMbShare(config);
