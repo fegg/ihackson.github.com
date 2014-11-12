@@ -1,0 +1,149 @@
+
+/* 页面布局 */
+html,body{
+    width: 100%;
+    height: 100%;
+}
+body{
+    display: relative;
+    margin: 0 auto;
+}
+.HIDE{
+    display: none;
+}
+.scoreBox{
+    width: 100%;
+    height: 10%;
+    margin: 0 auto;
+}
+.score-info{
+    font: 20px 'Microsoft Yahei';
+    margin-left: 153px;
+    padding-top: 8px;
+    color: white;
+    display: block;
+    width: 60px;
+    text-align: center;
+}
+.happy-ratio{
+    background: url(../images/score-bg.png) no-repeat;display: block;
+    width: 230px;
+    height: 42px;
+    margin: 8px auto 0;
+    background-size: cover;
+}
+.gameBox{
+    width: 100%;
+    height: 90%;
+    position: relative;
+}
+#canvas{
+    display: block;
+}
+.main {
+    padding: 0;
+    display: block;
+}
+#score-box{
+    position: absolute;
+}
+.add-score{
+    font: 30px '微软雅黑';
+    color: red;
+}
+.result{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -150px;
+    margin-left: -150px;
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+}
+.result-img{
+    width: 78px;
+    height: 65px;
+    position: absolute;
+    background: url(../images/nanguo.png) no-repeat;
+    background-size: cover;
+    left: 0;
+    top: -43px;
+}
+.result-score{
+    position: absolute;
+    width: 100%;
+    height: 130px;
+    border-radius: 10px;
+    background-color: #FFF8EE;
+}
+.random-message, .final-score{
+    font-size: 30px;
+    text-align: center;
+}
+.random-message{
+    padding-top: 25px;
+}
+.final-score
+{
+    font-size: 24px;
+    padding-top: 5px;
+    color: #eb5766;
+}
+.btn{
+    position: absolute;
+    display: block;
+    width: 130px;
+    height: 50px;
+}
+.restart{
+    background: url(../images/restart-btn.png) no-repeat;
+    background-size: cover;
+    left: 50%;
+    top: 50%;
+    margin-left: -65px;
+}
+.share{
+    background: url(../images/share-btn.png) no-repeat;
+    background-size: cover;
+    width: 90px;
+    left: 20px;
+    top: 220px;
+}
+.rank{
+    background: url(../images/rank-btn.png) no-repeat;
+    background-size: cover;
+    width: 112px;
+    left: 160px;
+    top: 220px;
+}
+.play {
+    position: absolute;
+    top: 14px;
+    right: 3px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: url(../images/music.png) 50% no-repeat rgba(0, 0, 0, 0.298039);
+    background-size: 75%;
+    z-index: 9999;
+}
+.page {
+    overflow: hidden;
+}
+.guide-box{
+    position: absolute;
+    width: 100%;
+    height: 52px;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    margin: 0 auto;
+    color: rgb(255,136,139);
+}
+.guide-info{
+    position: absolute;
+    top: 35%;
+    width: 100%;
+    left: 0;
+}
